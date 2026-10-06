@@ -1,0 +1,55 @@
+/* 테마 전환: 사이드바의 빠른 전환 버튼, 설정 화면의 선택 목록과 미리보기 (DESIGN.md 2) */
+
+.theme-quick {
+  margin-top: auto;
+  height: 40px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--sidebar-muted);
+  border-radius: var(--radius-md);
+  color: var(--sidebar-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+.theme-quick:hover { color: var(--sidebar-text-active); }
+.theme-quick + .keybox { margin-top: 0; }
+
+.theme-options { display: flex; flex-wrap: wrap; gap: 16px; }
+
+.theme-option {
+  position: relative;
+  width: 260px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+}
+.theme-option[data-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.theme-option:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* 라디오는 화면 밖으로 두고 카드 전체를 누르게 한다 (키보드와 스크린리더는 라디오로 쓴다) */
+.theme-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.theme-name { font-family: var(--font-heading); font-weight: 700; }
+.theme-option[data-selected="true"] .theme-name::after { content: " · 사용 중"; font-weight: 400; color: var(--accent-strong); }
+.theme-desc { font-size: var(--fs-small); line-height: 1.5; color: var(--text-muted); }
+
+/* 미리보기: 각 요소가 그 테마의 토큰(data-theme-scope)으로 칠해진다 */
+.tp { display: flex; flex-direction: column; height: 120px; overflow: hidden; background: var(--bg-app); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-md); }
+.tp-top { display: none; align-items: center; justify-content: center; gap: 8px; height: 22px; background: var(--bg-app); border-bottom: 1px solid var(--border); }
+.tp[data-theme-scope="education"] .tp-top { display: flex; }
+.tp-dot { width: 10px; height: 10px; border: 2px solid var(--border-input); border-radius: var(--radius-pill); }
+.tp-dot-on { background: var(--accent); border-color: var(--accent); }
+.tp-body { flex: 1; display: flex; min-height: 0; }
+.tp-side { width: 52px; padding: 8px 6px; display: flex; flex-direction: column; gap: 6px; background: var(--sidebar-bg); }
+.tp-nav { height: 8px; border-radius: var(--radius-sm); background: var(--sidebar-muted); }
+.tp-nav-on { background: var(--sidebar-active-bg); }
+.tp-main { flex: 1; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tp-title { font-family: var(--font-heading); font-size: var(--fs-min); font-weight: 700; white-space: nowrap; }
+.tp-card { height: 30px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+.tp-chips { display: flex; gap: 6px; }
+.tp-chip { width: 34px; height: 12px; border-radius: var(--radius-pill); background: var(--chip-source-bg); }
+.tp-chip-saved { background: var(--chip-saved-bg); }

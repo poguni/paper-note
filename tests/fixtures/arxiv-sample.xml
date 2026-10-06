@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/Vmv4Jz4PVrwn165kybdwGV5jvsc</id>
+  <title>arXiv Query: search_query=all:"linear mixed-effects" AND cat:stat.CO&amp;id_list=&amp;start=0&amp;max_results=3</title>
+  <updated>2026-10-05T12:40:12Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22linear+mixed-effects%22+AND+cat:stat.CO&amp;start=0&amp;max_results=3&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>3</opensearch:itemsPerPage>
+  <opensearch:totalResults>25</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/1002.3784v2</id>
+    <title>Estimation for High-Dimensional Linear Mixed-Effects Models Using $\ell_1$-Penalization</title>
+    <updated>2010-11-25T14:05:02Z</updated>
+    <link href="https://arxiv.org/abs/1002.3784v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1002.3784v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We propose an $\ell_1$-penalized estimation procedure for high-dimensional linear mixed-effects models. The models are useful whenever there is a grouping structure among high-dimensional observations, i.e. for clustered data. We prove a consistency and an oracle optimality result and we develop an algorithm with provable numerical convergence. Furthermore, we demonstrate the performance of the method on simulated and a real high-dimensional data set.</summary>
+    <category term="stat.ME" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.CO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2010-02-19T17:08:03Z</published>
+    <arxiv:primary_category term="stat.ME"/>
+    <arxiv:journal_ref>Scandinavian Journal of Statistics 2011, 38: 197-214</arxiv:journal_ref>
+    <author>
+      <name>Jürg Schelldorfer</name>
+    </author>
+    <author>
+      <name>Peter Bühlmann</name>
+    </author>
+    <author>
+      <name>Sara van de Geer</name>
+    </author>
+    <arxiv:doi>10.1111/j.1467-9469.2011.00740.x</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1111/j.1467-9469.2011.00740.x" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1406.5823v1</id>
+    <title>Fitting Linear Mixed-Effects Models using lme4</title>
+    <updated>2014-06-23T07:54:48Z</updated>
+    <link href="https://arxiv.org/abs/1406.5823v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1406.5823v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Maximum likelihood or restricted maximum likelihood (REML) estimates of the parameters in linear mixed-effects models can be determined using the lmer function in the lme4 package for R. As for most model-fitting functions in R, the model is described in an lmer call by a formula, in this case including both fixed- and random-effects terms. The formula and data together determine a numerical representation of the model from which the profiled deviance or the profiled REML criterion can be evaluated as a function of some of the model parameters. The appropriate criterion is optimized, using one of the constrained optimization functions in R, to provide the parameter estimates. We describe the structure of the model, the steps in evaluating the profiled deviance or REML criterion, and the structure of classes or types that represents such a model. Sufficient detail is included to allow specialization of these structures by users who wish to write functions to fit specialized linear mixed models, such as models incorporating pedigrees or smoothing splines, that are not easily expressible in the formula language used by lmer.</summary>
+    <category term="stat.CO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2014-06-23T07:54:48Z</published>
+    <arxiv:comment>51 pages, including R code, and an appendix</arxiv:comment>
+    <arxiv:primary_category term="stat.CO"/>
+    <author>
+      <name>Douglas Bates</name>
+    </author>
+    <author>
+      <name>Martin Mächler</name>
+    </author>
+    <author>
+      <name>Ben Bolker</name>
+    </author>
+    <author>
+      <name>Steve Walker</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2207.12455v1</id>
+    <title>Simple bootstrap for linear mixed effects under model misspecification</title>
+    <updated>2022-07-25T18:20:27Z</updated>
+    <link href="https://arxiv.org/abs/2207.12455v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2207.12455v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Linear mixed effects are considered excellent predictors of cluster-level parameters in various domains. However, previous work has shown that their performance can be seriously affected by departures from modelling assumptions. Since the latter are common in applied studies, there is a need for inferential methods which are to certain extent robust to misspecfications, but at the same time simple enough to be appealing for practitioners. We construct statistical tools for cluster-wise and simultaneous inference for mixed effects under model misspecification using straightforward semiparametric random effect bootstrap. In our theoretical analysis, we show that our methods are asymptotically consistent under general regularity conditions. In simulations our intervals were robust to severe departures from model assumptions and performed better than their competitors in terms of empirical coverage probability.</summary>
+    <category term="stat.ME" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.CO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2022-07-25T18:20:27Z</published>
+    <arxiv:comment>23 pages, 12 tables</arxiv:comment>
+    <arxiv:primary_category term="stat.ME"/>
+    <author>
+      <name>Katarzyna Reluga</name>
+    </author>
+    <author>
+      <name>Stefan Sperlich</name>
+    </author>
+  </entry>
+</feed>

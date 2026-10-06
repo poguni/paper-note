@@ -1,0 +1,61 @@
+# GitHub Pages 배포: main 브랜치에 올리면 테스트를 돌리고, 모두 통과하면 빌드한 dist/ 폴더를 배포한다.
+# 테스트가 하나라도 실패하면 배포하지 않는다. 사용 전에 저장소 Settings → Pages → Source를 "GitHub Actions"로 바꿔야 한다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Actions 탭에서 수동으로 다시 실행
+
+# 이 작업이 쓸 수 있는 권한은 필요한 만큼만
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치지 않게: 새 배포가 시작되면 대기 중인 이전 것은 건너뛴다 (진행 중인 배포는 끝까지 한다)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # 개발 환경과 같은 주 버전. 외부 패키지가 없어서 npm install은 필요 없다.
+
+      - name: 테스트 (비밀 값 검사, 약관 규칙, 접근성 토큰 포함)
+        run: npm test
+
+      - name: 빌드 (dist/)
+        run: npm run build
+
+      - name: 배포용 폴더 점검
+        run: |
+          test -f dist/index.html
+          test -f dist/papernote_splash.jpg
+          test -f dist/papernote_icon.png
+          test -f dist/vendor/pdfjs/pdf.min.mjs
+          test ! -e dist/papernote_splash.png
+          if grep -E "service_role|sb_secret_|sk-or-v1-[A-Za-z0-9]{8,}" dist/index.html; then
+            echo "::error::빌드 결과에 비밀 값 패턴이 있습니다"
+            exit 1
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

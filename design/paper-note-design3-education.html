@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920">
+<title>페이퍼노트 시안 3 · 교육용 (따뜻한 서재)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</head>
+<body>
+<!--
+디자인 시안 3 · 교육용 (따뜻한 서재)
+화면: 1920x1080 고정 시안(검색 + 논문 상세). 상단 4단계 표시(검색 > 저장 > 분석 > 내 서재) 포함.
+레이아웃: 상단 헤더 96px / 사이드바 288px / 결과 600px / 상세 나머지(요약과 번역·용어 사전은 상세 안에서 좌우 배치, 하단에 PDF 드롭존과 아이디어 리본)
+글꼴: 제목 Gowun Batang(400, 700), 본문 Gowun Dodum(400). Gowun Dodum은 굵기가 하나뿐이므로 강조는 Gowun Batang 700으로 한다.
+색상: 배경 #FAF4EA / 글자 #3B2F2A / 포인트 #C0503A(흰 글씨 대비 4.7:1) / 진한 포인트 글자 #9C3F28 / 보조 글자 #6F5D4E, #6B5848
+세이지 #E5EDDD(#476345) / 머스터드 #F8EBC8(#7A5A12) / 더스티 블루 #DFE8F0(#3D5C78) / 테두리 #EBDDC6
+모서리 14~24px. 자세한 구현 규칙은 DESIGN.md를 따른다.
+-->
+<div style="width: 1920px; height: 1080px; box-sizing: border-box; display: flex; flex-direction: column; background: #FAF4EA; color: #3B2F2A; font-family: 'Gowun Dodum', sans-serif; font-size: 16px">
+
+<header style="height: 96px; flex-shrink: 0; box-sizing: border-box; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #EBDDC6">
+<div style="display: flex; align-items: center; gap: 14px; width: 420px">
+<div style="width: 48px; height: 48px; border-radius: 16px; background: #C0503A; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5V19c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z"></path><path d="M12 6v13.5"></path></svg>
+</div>
+<div><div style="font-family: 'Gowun Batang', serif; font-size: 28px; font-weight: 700">페이퍼노트</div><div style="font-size: 12px; letter-spacing: 3px; color: #6F5D4E">PAPER NOTE</div></div>
+</div>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; align-items: center; gap: 14px">
+<li style="display: flex; align-items: center; gap: 10px; color: #476345"><span style="width: 34px; height: 34px; border-radius: 17px; background: #8FAE8B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700">✓</span>검색</li>
+<li style="width: 48px; height: 2px; background: #CFC0A6"></li>
+<li style="display: flex; align-items: center; gap: 10px; color: #476345"><span style="width: 34px; height: 34px; border-radius: 17px; background: #8FAE8B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700">✓</span>저장</li>
+<li style="width: 48px; height: 2px; background: #CFC0A6"></li>
+<li style="display: flex; align-items: center; gap: 10px; color: #9C3F28; font-weight: 700"><span style="width: 34px; height: 34px; border-radius: 17px; background: #C0503A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'Gowun Batang', serif">3</span>분석</li>
+<li style="width: 48px; height: 2px; background: #CFC0A6"></li>
+<li style="display: flex; align-items: center; gap: 10px; color: #6F5D4E"><span style="width: 34px; height: 34px; border-radius: 17px; border: 2px solid #CFC0A6; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-family: 'Gowun Batang', serif">4</span>내 서재</li>
+</ol>
+<div style="width: 420px; display: flex; align-items: center; justify-content: flex-end; gap: 12px">
+<span style="padding: 8px 14px; border-radius: 18px; background: #E5EDDD; color: #476345; font-size: 14px">● API 키 입력됨</span>
+<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #DCCBAE; border-radius: 22px; background: #FFFBF3; color: #3B2F2A; font: inherit; cursor: pointer">Claude Sonnet 5.5 ▾</button>
+</div>
+</header>
+
+<div style="flex: 1; min-height: 0; box-sizing: border-box; padding: 20px 24px 24px; display: flex; gap: 20px">
+
+<aside style="width: 288px; flex-shrink: 0; box-sizing: border-box; background: #FFFBF3; border: 1px solid #EBDDC6; border-radius: 22px; padding: 22px 18px; display: flex; flex-direction: column; gap: 22px">
+<nav style="display: flex; flex-direction: column; gap: 6px">
+<a href="#search" style="height: 48px; padding: 0 16px; border-radius: 14px; background: #F6DDD2; color: #9C3F28; font-weight: 700; display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>논문 검색</a>
+<a href="#library" style="height: 48px; padding: 0 16px; border-radius: 14px; color: #6B5A4C; display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="5" height="16" rx="1"></rect><rect x="11" y="4" width="5" height="16" rx="1"></rect><path d="M18 6l3 .8-3.2 12.2-3-.8z"></path></svg>내 서재</a>
+<a href="#settings" style="height: 48px; padding: 0 16px; border-radius: 14px; color: #6B5A4C; display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path><circle cx="16" cy="7" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg>설정</a>
+</nav>
+<div style="height: 1px; background: #EBDDC6"></div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="padding: 0 16px 8px; font-size: 13px; letter-spacing: 2px; color: #6F5D4E">검색 프리셋</div>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: #F8EBC8; color: #7A5A12; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #E4B65A"></span>1 통계</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #7C9CB8"></span>2 데이터분석</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #C0503A"></span>3 AI·바이브 코딩</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #8FAE8B"></span>4 생명과학</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #E4B65A"></span>5 학습동기</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #7C9CB8"></span>6 교육심리</button>
+<button type="button" style="height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: transparent; color: #6B5A4C; font: inherit; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 5px; background: #C0503A"></span>7 교육방법</button>
+<button type="button" style="margin-top: 8px; height: 44px; border: 1.5px dashed #CFBE9F; border-radius: 12px; background: transparent; color: #6F5D4E; font: inherit; cursor: pointer">+ 프리셋 추가</button>
+</div>
+<div style="margin-top: auto; box-sizing: border-box; padding: 16px; border-radius: 16px; background: #E5EDDD; color: #476345; font-size: 14px; line-height: 1.6">
+<div style="font-family: 'Gowun Batang', serif; font-weight: 700; margin-bottom: 4px">알아 두세요</div>
+API 키는 이 탭을 닫으면 지워져요. 서버에는 저장하지 않습니다.
+</div>
+</aside>
+
+<section style="width: 600px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="height: 56px; display: flex; gap: 10px">
+<div style="flex: 1; min-width: 0; box-sizing: border-box; display: flex; align-items: center; padding: 0 20px; background: #FFFFFF; border: 1px solid #DCCBAE; border-radius: 28px; font-size: 16px">structural equation modeling, multilevel model</div>
+<button type="button" style="width: 112px; border: 0; border-radius: 28px; background: #C0503A; color: #FFFFFF; font: inherit; font-size: 17px; cursor: pointer">검색</button>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; height: 36px">
+<span style="padding: 6px 14px; border-radius: 16px; background: #DFE8F0; color: #3D5C78; font-size: 14px">✓ arXiv</span>
+<span style="padding: 6px 14px; border-radius: 16px; background: #DFE8F0; color: #3D5C78; font-size: 14px">✓ Semantic Scholar</span>
+<span style="margin-left: auto; font-family: 'Gowun Batang', serif; font-weight: 700; color: #6B5A4C">검색 결과 24건</span>
+</div>
+<article style="box-sizing: border-box; height: 148px; padding: 16px 20px; border-radius: 18px; background: #FFF1E8; border: 2px solid #C0503A; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; gap: 10px"><div style="font-family: 'Gowun Batang', serif; font-size: 18px; font-weight: 700; line-height: 1.4">Fitting Linear Mixed-Effects Models Using lme4</div><span style="color: #C0503A; font-size: 20px">★</span></div>
+<div style="color: #6B5848; font-size: 14px">Bates, Mächler, Bolker, Walker · 2014</div>
+<div style="margin-top: auto; display: flex; gap: 8px"><span style="padding: 3px 12px; border-radius: 12px; background: #DFE8F0; color: #3D5C78; font-size: 13px">arXiv</span><span style="padding: 3px 12px; border-radius: 12px; background: #E5EDDD; color: #476345; font-size: 13px">PDF 있음</span><span style="padding: 3px 12px; border-radius: 12px; background: #F6DDD2; color: #9C3F28; font-size: 13px">저장됨</span></div>
+</article>
+<article style="box-sizing: border-box; height: 148px; padding: 16px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Gowun Batang', serif; font-size: 18px; font-weight: 700; line-height: 1.4">A Conceptual Introduction to Hamiltonian Monte Carlo</div>
+<div style="color: #6B5848; font-size: 14px">Michael Betancourt · 2017</div>
+<div style="margin-top: auto; display: flex; gap: 8px"><span style="padding: 3px 12px; border-radius: 12px; background: #DFE8F0; color: #3D5C78; font-size: 13px">arXiv</span><span style="padding: 3px 12px; border-radius: 12px; background: #E5EDDD; color: #476345; font-size: 13px">PDF 있음</span></div>
+</article>
+<article style="box-sizing: border-box; height: 148px; padding: 16px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Gowun Batang', serif; font-size: 18px; font-weight: 700; line-height: 1.4">Probabilistic Programming in Python Using PyMC3</div>
+<div style="color: #6B5848; font-size: 14px">Salvatier, Wiecki, Fonnesbeck · 2015</div>
+<div style="margin-top: auto; display: flex; gap: 8px"><span style="padding: 3px 12px; border-radius: 12px; background: #DFE8F0; color: #3D5C78; font-size: 13px">arXiv</span><span style="padding: 3px 12px; border-radius: 12px; background: #F8EBC8; color: #7A5A12; font-size: 13px">Semantic Scholar</span><span style="padding: 3px 12px; border-radius: 12px; background: #E5EDDD; color: #476345; font-size: 13px">PDF 있음</span></div>
+</article>
+<article style="box-sizing: border-box; height: 148px; padding: 16px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Gowun Batang', serif; font-size: 18px; font-weight: 700; line-height: 1.4">The No-U-Turn Sampler: Adaptively Setting Path Lengths in Hamiltonian Monte Carlo</div>
+<div style="color: #6B5848; font-size: 14px">Hoffman, Gelman · 2011</div>
+<div style="margin-top: auto; display: flex; gap: 8px"><span style="padding: 3px 12px; border-radius: 12px; background: #DFE8F0; color: #3D5C78; font-size: 13px">arXiv</span><span style="padding: 3px 12px; border-radius: 12px; background: #E5EDDD; color: #476345; font-size: 13px">PDF 있음</span></div>
+</article>
+<article style="box-sizing: border-box; height: 148px; padding: 16px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 6px">
+<div style="font-family: 'Gowun Batang', serif; font-size: 18px; font-weight: 700; line-height: 1.4">Visualization in Bayesian Workflow</div>
+<div style="color: #6B5848; font-size: 14px">Gabry, Simpson, Vehtari, Betancourt, Gelman · 2017</div>
+<div style="margin-top: auto; display: flex; gap: 8px"><span style="padding: 3px 12px; border-radius: 12px; background: #DFE8F0; color: #3D5C78; font-size: 13px">arXiv</span><span style="padding: 3px 12px; border-radius: 12px; background: #E5EDDD; color: #476345; font-size: 13px">PDF 있음</span></div>
+</article>
+</section>
+
+<section style="flex: 1; min-width: 0; box-sizing: border-box; background: #FFFDF8; border: 1px solid #EBDDC6; border-radius: 24px; padding: 26px 28px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+<div>
+<h2 style="margin: 0; font-family: 'Gowun Batang', serif; font-size: 31px; font-weight: 700; line-height: 1.3">Fitting Linear Mixed-Effects Models Using lme4</h2>
+<div style="margin-top: 8px; color: #6B5848; font-size: 15px">Douglas Bates, Martin Mächler, Ben Bolker, Steve Walker · 2014 · Journal of Statistical Software</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="padding: 6px 14px; border-radius: 16px; background: #F6DDD2; color: #9C3F28; font-size: 14px">저장됨</span>
+<span style="padding: 6px 14px; border-radius: 16px; background: #DFE8F0; color: #3D5C78; font-size: 14px">arXiv 1406.5823</span>
+<button type="button" style="height: 38px; padding: 0 16px; border: 1px solid #DCCBAE; border-radius: 19px; background: #FFFBF3; color: #3B2F2A; font: inherit; font-size: 14px; cursor: pointer">PDF 새 탭으로 열기 ↗</button>
+<div style="margin-left: auto; display: flex; padding: 4px; border-radius: 22px; background: #F3E8D4; height: 44px; box-sizing: border-box">
+<button type="button" style="width: 120px; border: 0; border-radius: 18px; background: #C0503A; color: #FFFFFF; font: inherit; cursor: pointer">초록 단계</button>
+<button type="button" style="width: 120px; border: 0; border-radius: 18px; background: transparent; color: #6B5848; font: inherit; cursor: pointer">본문 단계</button>
+</div>
+</div>
+
+<div style="display: flex; gap: 18px; flex: 1; min-height: 0">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="box-sizing: border-box; padding: 18px 20px; border-radius: 18px; background: #F8EBC8; display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'Gowun Batang', serif; font-size: 17px; font-weight: 700; color: #7A5A12">세 줄로 읽기</div>
+<div style="line-height: 1.6">① R의 lme4 패키지로 선형 혼합효과모형을 적합하는 방법을 설명합니다.</div>
+<div style="line-height: 1.6">② lmer 함수가 ML과 REML 추정을 제공합니다.</div>
+<div style="line-height: 1.6">③ 희소 행렬 기법으로 큰 자료도 빠르게 계산합니다.</div>
+</div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="flex: 1; box-sizing: border-box; padding: 10px 16px; border-radius: 14px; background: #E5EDDD; display: flex; gap: 14px; align-items: center"><b style="width: 64px; font-family: 'Gowun Batang', serif; color: #476345">연구 목적</b><span style="line-height: 1.45; font-size: 15px">혼합효과모형의 적합 절차와 lme4 구현 소개</span></div>
+<div style="flex: 1; box-sizing: border-box; padding: 10px 16px; border-radius: 14px; background: #DFE8F0; display: flex; gap: 14px; align-items: center"><b style="width: 64px; font-family: 'Gowun Batang', serif; color: #3D5C78">방법</b><span style="line-height: 1.45; font-size: 15px">ML·REML 추정, 희소 행렬 기반 계산</span></div>
+<div style="flex: 1; box-sizing: border-box; padding: 10px 16px; border-radius: 14px; background: #F6DDD2; display: flex; gap: 14px; align-items: center"><b style="width: 64px; font-family: 'Gowun Batang', serif; color: #9C3F28">결과</b><span style="line-height: 1.45; font-size: 15px; color: #6B5848">초록에 언급 없음 · 본문 단계에서 확인</span></div>
+<div style="flex: 1; box-sizing: border-box; padding: 10px 16px; border-radius: 14px; background: #F3E8D4; display: flex; gap: 14px; align-items: center"><b style="width: 64px; font-family: 'Gowun Batang', serif; color: #6B5A4C">한계</b><span style="line-height: 1.45; font-size: 15px; color: #6B5848">초록에 언급 없음 · 본문 단계에서 확인</span></div>
+</div>
+</div>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="box-sizing: border-box; padding: 18px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'Gowun Batang', serif; font-size: 17px; font-weight: 700">초록 번역</span><span style="color: #6F5D4E; font-size: 13px">약 1센트</span></div>
+<p style="margin: 0; line-height: 1.8">R의 lme4 패키지에 들어 있는 lmer 함수로 선형 혼합효과모형의 모수에 대한 최대우도(ML) 또는 제한 최대우도(REML) 추정치를 구할 수 있습니다. 이 논문은 모형 식을 지정하는 방법과 내부 계산 구조를 단계별로 설명합니다.</p>
+</div>
+<div style="flex: 1; box-sizing: border-box; padding: 18px 20px; border-radius: 18px; background: #FFFBF3; border: 1px solid #EBDDC6; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Gowun Batang', serif; font-size: 17px; font-weight: 700">용어 사전</span>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+<div style="padding: 8px 12px; border-radius: 12px; background: #F8EBC8"><b>혼합효과모형</b><div style="font-size: 13px; color: #6B5848">mixed-effects model</div></div>
+<div style="padding: 8px 12px; border-radius: 12px; background: #E5EDDD"><b>제한 최대우도</b><div style="font-size: 13px; color: #6B5848">REML</div></div>
+<div style="padding: 8px 12px; border-radius: 12px; background: #DFE8F0"><b>임의효과</b><div style="font-size: 13px; color: #6B5848">random effect</div></div>
+<div style="padding: 8px 12px; border-radius: 12px; background: #F6DDD2"><b>희소 행렬</b><div style="font-size: 13px; color: #6B5848">sparse matrix</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="height: 200px; flex-shrink: 0; display: flex; gap: 18px">
+<div style="width: 290px; flex-shrink: 0; box-sizing: border-box; border: 2px dashed #CFBE9F; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #6B5848; text-align: center; padding: 0 20px">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"></path></svg>
+<span style="line-height: 1.5">PDF를 끌어다 놓으면<br>본문 분석을 시작해요</span>
+</div>
+<div style="flex: 1; min-width: 0; box-sizing: border-box; padding: 20px 24px; border-radius: 20px; background: #F6DDD2; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="padding: 4px 12px; border-radius: 12px; background: #C0503A; color: #FFFFFF; font-size: 13px">바이브 코딩 아이디어</span><span style="color: #8A5442; font-size: 13.5px">난이도 ★★☆ · 단일 HTML 가능</span></div>
+<div style="font-family: 'Gowun Batang', serif; font-size: 25px; font-weight: 700; color: #7A2F1B">lmer 식 해설기</div>
+<div style="line-height: 1.55">모형 식을 붙여넣으면 다층 구조를 도식과 쉬운 말로 풀어 줍니다. 핵심 기능: 식 파서 · 수준별 구조 도식 · 해석 문장 생성</div>
+<button type="button" style="margin-top: auto; align-self: flex-start; height: 42px; padding: 0 20px; border: 0; border-radius: 21px; background: #9C3F28; color: #FFFFFF; font: inherit; cursor: pointer">첫 프롬프트 복사</button>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

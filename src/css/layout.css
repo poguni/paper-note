@@ -1,0 +1,10 @@
+/* 화면 배치. 테마별 배치 차이(education의 상단 막대 등)는 Phase 4에서 덧씌운다. */
+body {
+  display: grid;
+  grid-template-columns: 256px minmax(0, 1fr);
+  grid-template-areas: "sidebar main";
+  min-height: 100vh;
+}
+
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }

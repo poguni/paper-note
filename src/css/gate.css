@@ -1,0 +1,81 @@
+/* 첫 화면(스플래시 + 로그인 + 회원가입), 승인 대기·거절 화면 (DESIGN.md 5.12, 5.13), 관리자 가입 승인 (5.14) */
+
+/* 관문이 열려 있으면 앱의 사이드바와 본문은 숨기고 관문만 보인다 */
+body[data-gate="on"] { display: block; }
+body[data-gate="on"] .sidebar, body[data-gate="on"] .main { display: none; }
+
+.gate {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 32px 16px;
+  /* 종이공예 배경 이미지. 가운데가 비어 있어 로고와 카드가 잘 보인다. 이미지를 못 불러오면 사이드바 색 */
+  background: var(--splash-bg) url("papernote_splash.jpg") center / cover no-repeat;
+}
+
+.gate-brand { text-align: center; color: var(--on-splash); }
+.gate-icon { display: block; margin: 0 auto 16px; width: 88px; height: 88px; border-radius: 20px; }
+.gate-name { font-family: var(--font-heading); font-size: 44px; font-weight: 700; letter-spacing: -1px; }
+.gate-sub { margin-top: 8px; font-size: var(--fs-small); letter-spacing: 5px; color: var(--on-splash-muted); }
+
+.gate-card {
+  width: min(420px, 100%);
+  padding: var(--pad-panel);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+}
+
+.gate-title { margin: 0 0 14px; font-family: var(--font-heading); font-size: 22px; font-weight: 700; }
+.gate-note { margin: 0 0 16px; line-height: 1.6; color: var(--text-muted); }
+.gate-email { margin: 0 0 16px; font-weight: 500; word-break: break-all; }
+.gate-form { display: flex; flex-direction: column; gap: 14px; }
+.gate-form .btn-primary { height: 48px; }
+.gate-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.gate-status { margin: 14px 0 0; font-size: var(--fs-small); color: var(--text-muted); }
+
+/* 오류는 입력창 아래에 글씨와 기호로 (색만으로 알리지 않는다) */
+.gate-error { margin: 0; font-size: var(--fs-small); color: var(--accent-strong); }
+.gate-error::before { content: "⚠ "; }
+
+.gate-switch { margin: 16px 0 0; font-size: var(--fs-small); color: var(--text-muted); }
+
+.link-btn { padding: 0; border: 0; background: none; color: var(--accent-strong); font: inherit; text-decoration: underline; cursor: pointer; }
+
+.pw-row { display: flex; gap: 8px; }
+.pw-row .input { flex: 1; min-width: 0; }
+.pw-toggle { height: 44px; flex-shrink: 0; }
+
+/* ---------- 설정 메뉴 옆의 "대기 N" 배지 ---------- */
+.nav-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--chip-source2-bg);
+  color: var(--chip-source2-text);
+  font-size: var(--fs-min);
+  font-weight: 700;
+}
+
+/* ---------- 관리자: 가입 승인 목록 ---------- */
+.admin-table { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.admin-row { display: grid; grid-template-columns: minmax(0, 2fr) 110px minmax(0, 1.2fr) 150px; align-items: center; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--border); }
+.admin-row:first-child { border-top: 0; }
+.admin-head { background: var(--bg-app); font-size: var(--fs-small); font-weight: 700; color: var(--text-muted); }
+.admin-email { word-break: break-all; }
+.admin-actions { display: flex; gap: 6px; }
+.admin-cell .chip + .chip { margin-left: 6px; }
+.admin-foot { margin-top: 12px; }
+
+.chip-status-pending { background: var(--chip-source2-bg); color: var(--chip-source2-text); font-weight: 700; }
+.chip-status-approved { background: var(--chip-saved-bg); color: var(--chip-saved-text); font-weight: 700; }
+.chip-status-rejected { background: var(--bg-app); color: var(--text-muted); border: 1px solid var(--border); }
+
+@media (max-width: 760px) {
+  .admin-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .admin-head { display: none; }
+}

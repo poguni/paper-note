@@ -1,0 +1,11 @@
+{
+  "name": "paper-note",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "test": "node --test"
+  }
+}

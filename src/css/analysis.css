@@ -1,0 +1,129 @@
+/* AI 분석: 모델 선택, 분석 구역, 결과 카드, 사이드바의 API 키 상자 (DESIGN.md 5.5, 5.7) */
+
+/* ---------- 검색 막대의 모델 선택 ---------- */
+.model-select { gap: 10px; font-size: var(--fs-small); color: var(--text-muted); }
+.model-select select { border: 0; background: transparent; color: var(--text); font: inherit; font-size: 14px; font-weight: 500; }
+
+/* ---------- 사이드바의 API 키 상자 ---------- */
+.keybox {
+  margin-top: auto;
+  padding: 14px 16px;
+  border: 1px solid var(--sidebar-active-bg);
+  border-radius: 10px;
+}
+.keybox-title { padding: 0; letter-spacing: 1px; }
+.keybox-status { margin-top: 8px; display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.key-dot { width: 8px; height: 8px; border-radius: 4px; border: 1px solid var(--sidebar-muted); }
+.key-dot[data-on="true"] { background: var(--ok); border-color: var(--ok); }
+.keybox-note { margin-top: 4px; font-size: var(--fs-small); color: var(--sidebar-muted); }
+.keybox-form { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.keybox-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--sidebar-muted);
+  border-radius: var(--radius-md);
+  color: var(--sidebar-text-active);
+  font: inherit;
+  font-size: var(--fs-small);
+}
+.keybox-btn {
+  height: 36px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--sidebar-muted);
+  border-radius: var(--radius-md);
+  color: var(--sidebar-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+.keybox-toggle { margin-top: 10px; width: 100%; }
+.keybox-form + .keybox-toggle { margin-top: 6px; }
+.keybox-error { flex-basis: 100%; margin: 0; font-size: var(--fs-small); color: var(--sidebar-text-active); }
+
+/* ---------- 상세 안의 AI 분석 구역 ---------- */
+.analysis h3 { margin: 0 0 12px; font-family: var(--font-heading); font-size: 18px; font-weight: 700; }
+.analysis-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.analysis-est, .analysis-running { font-size: var(--fs-small); color: var(--text-muted); }
+.analysis .form-error { margin-top: 10px; }
+
+/* ---------- 결과 카드 ---------- */
+.result { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+.result-card { padding: 16px 18px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.result-card h3 { margin: 0 0 12px; font-family: var(--font-heading); font-size: 17px; font-weight: 700; }
+.result-text { margin: 0; line-height: 1.7; font-size: 14px; }
+.result-pick { margin-top: 14px; display: flex; align-items: center; gap: 8px; font-size: var(--fs-small); color: var(--text-muted); }
+.result-foot { margin: 0; font-size: var(--fs-small); color: var(--text-muted); }
+
+.summary-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.summary-list li { display: flex; gap: 12px; line-height: 1.6; }
+.summary-no { width: 22px; flex-shrink: 0; font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--accent); }
+
+.glossary { display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 1.55; }
+.glossary-en { color: var(--text-subtle); }
+.glossary-note { color: var(--text-muted); }
+
+/* ---------- 단계 선택 (DESIGN.md 5.3) ---------- */
+.stage-tabs { display: inline-flex; gap: 4px; margin-bottom: 12px; padding: 4px; background: var(--bg-app); border-radius: 10px; }
+.stage-tab {
+  height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.stage-tab[aria-pressed="true"] { background: var(--accent); color: var(--accent-on); font-weight: 500; }
+.stage-tab:disabled { cursor: default; }
+.stage-tab:disabled:not([aria-pressed="true"]) { color: var(--text-subtle); }
+
+/* ---------- 본문 단계 결과 ---------- */
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tile { padding: 14px; background: var(--bg-app); border: 1px solid var(--tile-border); border-radius: var(--radius-md); }
+.tile-label { font-size: var(--fs-min); font-weight: 700; letter-spacing: 1px; color: var(--accent); }
+.tile-text { margin-top: 6px; font-size: 14px; line-height: 1.6; }
+.tile-empty { color: var(--text-subtle); }
+
+.section-ko { margin-top: 0; padding: 10px 12px; border-top: 1px solid var(--border); }
+.result-card .pdf-section + .pdf-section, .result-card .detail-hint + .pdf-section { margin-top: 6px; }
+
+.idea .detail-kicker { margin-bottom: 8px; }
+.idea-name { margin: 0 0 6px; font-family: var(--font-heading); font-size: 19px; font-weight: 700; }
+.idea-evidence { margin-top: 6px; font-size: var(--fs-small); line-height: 1.5; color: var(--text-muted); }
+.idea-features { margin: 10px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.6; }
+.idea-chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.idea-prompt { margin-top: 12px; padding: 12px 14px; display: flex; align-items: flex-start; flex-wrap: wrap; gap: 12px; background: var(--bg-app); border-radius: var(--radius-md); }
+.idea-prompt-text { flex: 1 1 240px; font-size: var(--fs-small); line-height: 1.55; white-space: pre-wrap; }
+.idea-copy-status { flex-basis: 100%; font-size: var(--fs-small); color: var(--text-muted); }
+.idea-copy-status:empty { display: none; }
+
+/* ---------- 통계 분석 모드와 통계 상세 (DESIGN.md 5.3, 5.11) ---------- */
+.stats-toggle { margin: 0 0 12px 12px; display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-small); cursor: pointer; }
+.stats-toggle input { margin: 0; accent-color: var(--accent); }
+.code-head { margin-top: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.code-head .btn { margin-left: auto; }
+.code-box {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+}
+
+/* ---------- 전문 번역 (섹션 단위) ---------- */
+.tr-label { margin: 10px 12px 4px; font-size: var(--fs-small); font-weight: 700; color: var(--accent); }
+.tr-block { padding: 0 12px 12px; }
+.translation-text { margin-top: 6px; padding: 10px 12px; background: var(--bg-app); border-radius: var(--radius-md); white-space: pre-wrap; line-height: 1.75; }
+.tr-block .btn { margin-top: 8px; }
+.tr-block .tr-cost { margin-left: 10px; }
+.tr-all { margin-top: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }

@@ -1,0 +1,44 @@
+/* 분석 결과 비교 화면 (F16): 넓은 대화상자에 두 결과를 나란히 */
+
+.result-pickrow { margin-top: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.result-pickrow .result-pick { margin-top: 0; }
+
+.cmp {
+  width: min(1120px, 96vw);
+  max-height: 92vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.cmp:not([open]) { display: none; }
+.cmp::backdrop { background: var(--text); opacity: 0.45; }
+
+.cmp-head { padding: var(--pad-panel); padding-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); }
+.cmp-heading { min-width: 0; }
+.cmp-title { margin: 0; font-family: var(--font-heading); font-size: var(--fs-h2); font-weight: 700; }
+.cmp-paper { margin-top: 4px; font-size: var(--fs-small); color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.cmp-body { padding: 16px var(--pad-panel) var(--pad-panel); overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.cmp-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cmp-pick { display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-small); color: var(--text-muted); }
+.cmp-pick .select { width: 100%; }
+
+.cmp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
+.cmp-meta { padding: 12px 16px; background: var(--accent-soft); border-radius: var(--radius-md); color: var(--accent-strong); }
+.cmp-model { font-family: var(--font-heading); font-size: var(--fs-body); font-weight: 700; }
+.cmp-sub { margin-top: 2px; font-size: var(--fs-small); }
+
+.cmp-label { grid-column: 1 / -1; margin: 12px 0 0; font-family: var(--font-heading); font-size: var(--fs-body); font-weight: 700; }
+.cmp-cell { min-width: 0; padding: 12px 16px; background: var(--bg-app); border: 1px solid var(--border); border-radius: var(--radius-md); }
+.cmp-text, .cmp-empty, .cmp-note { margin: 0; line-height: 1.7; font-size: var(--fs-small); }
+.cmp-empty { color: var(--text-muted); }
+.cmp-note { grid-column: 1 / -1; padding: 10px 16px; background: var(--bg-app); border-radius: var(--radius-md); color: var(--text-muted); }
+.cmp-list { margin: 0; padding-left: 18px; font-size: var(--fs-small); line-height: 1.7; }
+
+@media (max-width: 760px) {
+  .cmp-controls, .cmp-grid { grid-template-columns: minmax(0, 1fr); }
+}

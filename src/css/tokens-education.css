@@ -1,0 +1,70 @@
+/* 테마 education (교육용, 따뜻한 서재) 토큰. 값은 DESIGN.md 3절, 시안 3 기준. */
+:root[data-theme="education"],
+[data-theme-scope="education"] {
+  /* 색상 (3.1) */
+  --bg-app: #FAF4EA;
+  --bg-surface: #FFFBF3;
+  --bg-surface-raised: #FFFDF8;
+  --bg-selected: #FFF1E8;
+  --border: #EBDDC6;
+  --border-input: #DCCBAE;
+  --border-dashed: #CFBE9F;
+  --text: #3B2F2A;
+  --text-muted: #6B5A4C;
+  --text-subtle: #6F5D4E;
+  --accent: #C0503A;
+  --accent-strong: #9C3F28;
+  --accent-soft: #F6DDD2;
+  --accent-on: #FFFFFF;
+  --sidebar-bg: #FFFBF3;
+  --sidebar-active-bg: #F6DDD2;
+  --sidebar-text: #6B5A4C;
+  --sidebar-text-active: #9C3F28;
+  --sidebar-muted: #6F5D4E;
+  /* 스플래시(로그인 첫 화면) 배경 이미지 위의 글씨. 이미지가 두 테마 모두 어두운 남색이라 같은 값 */
+  --splash-bg: #2A3A63;
+  --on-splash: #FFFFFF;
+  --on-splash-muted: #D3D8EC;
+  /* education은 프리셋 번호 대신 색 점을 쓴다 (Phase 4에서 구현). 그 전까지 보조 글씨 색으로 둔다. */
+  --preset-number: var(--text-subtle);
+  --ok: #8FAE8B;
+
+  /* 칩 (3.2) */
+  --chip-source-bg: #DFE8F0;
+  --chip-source-text: #3D5C78;
+  --chip-source2-bg: #F8EBC8;
+  --chip-source2-text: #7A5A12;
+  --chip-pdf-bg: #E5EDDD;
+  --chip-pdf-text: #476345;
+  --chip-saved-bg: #F6DDD2;
+  --chip-saved-text: #9C3F28;
+
+  /* 구조화 요약 타일 (3.2): 항목마다 다른 색 면 */
+  --tile-border: transparent;
+  --tile-purpose-bg: #E5EDDD;
+  --tile-purpose-text: #476345;
+  --tile-method-bg: #DFE8F0;
+  --tile-method-text: #3D5C78;
+  --tile-result-bg: #F6DDD2;
+  --tile-result-text: #9C3F28;
+  --tile-limit-bg: #F3E8D4;
+  --tile-limit-text: #6B5A4C;
+
+  /* 글꼴 (3.3). Gowun Dodum은 굵기가 400뿐이라 굵은 글씨는 --font-heading을 쓴다. */
+  --font-heading: 'Gowun Batang', serif;
+  --font-body: 'Gowun Dodum', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --fs-title: 31px;
+  --fs-h2: 19px;
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-min: 12px;
+
+  /* 모서리와 간격 (3.4) */
+  --radius-sm: 5px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --gap-card: 12px;
+  --pad-panel: 28px;
+}

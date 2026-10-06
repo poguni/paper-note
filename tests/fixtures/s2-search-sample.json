@@ -1,0 +1,72 @@
+{
+  "total": 5,
+  "offset": 0,
+  "next": 5,
+  "data": [
+    {
+      "paperId": "1111111111111111111111111111111111111111",
+      "url": "https://www.semanticscholar.org/paper/1111111111111111111111111111111111111111",
+      "title": "Fitting Linear Mixed-Effects Models Using lme4",
+      "abstract": "Maximum likelihood or restricted maximum likelihood (REML) estimates of the parameters in linear mixed-effects models can be determined using the lmer function in the lme4 package for R.",
+      "venue": "Journal of Statistical Software",
+      "year": 2015,
+      "publicationDate": "2015-10-07",
+      "citationCount": 1234,
+      "externalIds": { "DOI": "10.18637/jss.v067.i01", "ArXiv": "1406.5823", "CorpusId": 11957 },
+      "openAccessPdf": { "url": "https://www.jstatsoft.org/article/view/v067i01/v67i01.pdf", "status": "GOLD" },
+      "authors": [
+        { "authorId": "1", "name": "D. Bates" },
+        { "authorId": "2", "name": "M. Mächler" },
+        { "authorId": "3", "name": "B. Bolker" },
+        { "authorId": "4", "name": "S. Walker" }
+      ]
+    },
+    {
+      "paperId": "2222222222222222222222222222222222222222",
+      "url": "https://www.semanticscholar.org/paper/2222222222222222222222222222222222222222",
+      "title": "Estimation for High-Dimensional Linear Mixed-Effects Models Using l1-Penalization",
+      "abstract": "We propose an l1-penalized estimation procedure for high-dimensional linear mixed-effects models.",
+      "venue": "Scandinavian Journal of Statistics",
+      "year": 2011,
+      "publicationDate": "2011-06-01",
+      "citationCount": 321,
+      "externalIds": { "DOI": "10.1111/J.1467-9469.2011.00740.X" },
+      "openAccessPdf": null,
+      "authors": [{ "authorId": "5", "name": "J. Schelldorfer" }, { "authorId": "6", "name": "P. Bühlmann" }]
+    },
+    {
+      "paperId": "3333333333333333333333333333333333333333",
+      "url": "https://www.semanticscholar.org/paper/3333333333333333333333333333333333333333",
+      "title": "A Primer on\n   Multilevel Modeling",
+      "abstract": null,
+      "venue": "Educational Review",
+      "year": 2019,
+      "publicationDate": "2019-03-01",
+      "citationCount": 50,
+      "externalIds": { "DOI": "10.1000/XYZ.1" },
+      "openAccessPdf": null,
+      "authors": [{ "authorId": "7", "name": "Ann Zed" }]
+    },
+    {
+      "paperId": "4444444444444444444444444444444444444444",
+      "url": null,
+      "title": "Multilevel Models for Education Data",
+      "abstract": "Year-only record without an exact publication date.",
+      "venue": "",
+      "year": 2024,
+      "publicationDate": null,
+      "citationCount": 0,
+      "externalIds": {},
+      "openAccessPdf": null,
+      "authors": []
+    },
+    {
+      "paperId": "5555555555555555555555555555555555555555",
+      "title": null,
+      "year": 2020,
+      "citationCount": 3,
+      "externalIds": {},
+      "authors": []
+    }
+  ]
+}

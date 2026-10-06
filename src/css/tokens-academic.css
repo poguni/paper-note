@@ -1,0 +1,69 @@
+/* 테마 academic (학술, 인디고와 와인) 토큰. 값은 DESIGN.md 3절, 칩은 시안 1 기준. */
+:root[data-theme="academic"],
+[data-theme-scope="academic"] {
+  /* 색상 (3.1) */
+  --bg-app: #F6F6F2;
+  --bg-surface: #FFFFFF;
+  --bg-surface-raised: #FFFFFF;
+  --bg-selected: #E9EDF8;
+  --border: #DAD9D2;
+  --border-input: #CFCEC6;
+  --border-dashed: #B3B9CF;
+  --text: #1E2A4A;
+  --text-muted: #4B5675;
+  --text-subtle: #5D6683;
+  --accent: #8F2D3F;
+  --accent-strong: #7A2535;
+  --accent-soft: #F4E1E5;
+  --accent-on: #FFFFFF;
+  --sidebar-bg: #1B2744;
+  --sidebar-active-bg: #2B3B66;
+  --sidebar-text: #C9CFE6;
+  --sidebar-text-active: #FFFFFF;
+  --sidebar-muted: #98A2C4;
+  /* 스플래시(로그인 첫 화면) 배경 이미지 위의 글씨. 이미지가 두 테마 모두 어두운 남색이라 같은 값 */
+  --splash-bg: #2A3A63;
+  --on-splash: #FFFFFF;
+  --on-splash-muted: #D3D8EC;
+  --preset-number: #D9B36A;
+  --ok: #5CC2B1;
+
+  /* 칩 (3.2) */
+  --chip-source-bg: #F4E1E5;
+  --chip-source-text: #7A2535;
+  --chip-source2-bg: #F3E9D2;
+  --chip-source2-text: #6F4E12;
+  --chip-pdf-bg: #E9EDF8;
+  --chip-pdf-text: #1E2A4A;
+  --chip-saved-bg: #E3EEEF;
+  --chip-saved-text: #1F5559;
+
+  /* 구조화 요약 타일 (3.2): 색 면으로 구분하지 않고 항목 이름만 accent */
+  --tile-border: #E4E3DC;
+  --tile-purpose-bg: #F6F6F2;
+  --tile-purpose-text: #8F2D3F;
+  --tile-method-bg: #F6F6F2;
+  --tile-method-text: #8F2D3F;
+  --tile-result-bg: #F6F6F2;
+  --tile-result-text: #8F2D3F;
+  --tile-limit-bg: #F6F6F2;
+  --tile-limit-text: #8F2D3F;
+
+  /* 글꼴 (3.3) */
+  --font-heading: 'Noto Serif KR', serif;
+  --font-body: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --fs-title: 30px;
+  --fs-h2: 19px;
+  --fs-body: 15px;
+  --fs-small: 13px;
+  --fs-min: 12px;
+
+  /* 모서리와 간격 (3.4) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 8px;
+  --gap-card: 10px;
+  --pad-panel: 24px;
+}

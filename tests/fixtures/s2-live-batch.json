@@ -1,0 +1,50 @@
+{
+  "ids": [
+    "ARXIV:1406.5823",
+    "ARXIV:1002.3784",
+    "ARXIV:2207.12455",
+    "ARXIV:0000.00000",
+    "DOI:10.18637/jss.v067.i01"
+  ],
+  "response": [
+    {
+      "paperId": "9b536c7b0f45d4b512f337d0acda09ca3e4cd953",
+      "externalIds": {
+        "ArXiv": "1406.5823",
+        "MAG": "1951724000",
+        "DOI": "10.18637/JSS.V067.I01",
+        "CorpusId": 88513115
+      },
+      "citationCount": 88315
+    },
+    {
+      "paperId": "142844416c96f20070a12c153272c6e31f837537",
+      "externalIds": {
+        "MAG": "2951982552",
+        "ArXiv": "1002.3784",
+        "DOI": "10.1111/j.1467-9469.2011.00740.x",
+        "CorpusId": 15441738
+      },
+      "citationCount": 185
+    },
+    {
+      "paperId": "4f5ed6a1d938342231dad3399c284beedc6e0c3a",
+      "externalIds": {
+        "ArXiv": "2207.12455",
+        "CorpusId": 251066846
+      },
+      "citationCount": 0
+    },
+    null,
+    {
+      "paperId": "9b536c7b0f45d4b512f337d0acda09ca3e4cd953",
+      "externalIds": {
+        "ArXiv": "1406.5823",
+        "MAG": "1951724000",
+        "DOI": "10.18637/JSS.V067.I01",
+        "CorpusId": 88513115
+      },
+      "citationCount": 88315
+    }
+  ]
+}

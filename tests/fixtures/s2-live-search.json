@@ -1,0 +1,171 @@
+{
+  "total": 24948309,
+  "offset": 0,
+  "next": 5,
+  "data": [
+    {
+      "paperId": "160e251361523bc5ecc116396e8a372e001ab87e",
+      "externalIds": {
+        "PubMedCentral": "7973361",
+        "DOI": "10.3389/fpsyg.2021.622929",
+        "CorpusId": 232116543,
+        "PubMed": "33746840"
+      },
+      "url": "https://www.semanticscholar.org/paper/160e251361523bc5ecc116396e8a372e001ab87e",
+      "title": "Understanding of Physical Activity in Social Ecological Perspective: Application of Multilevel Model",
+      "venue": "Frontiers in Psychology",
+      "year": 2021,
+      "citationCount": 77,
+      "openAccessPdf": {
+        "url": "https://www.frontiersin.org/articles/10.3389/fpsyg.2021.622929/pdf",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC7973361, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2021-03-05",
+      "authors": [
+        {
+          "authorId": "2110391487",
+          "name": "Yoongu Lee"
+        },
+        {
+          "authorId": "2115285879",
+          "name": "Sanghyun Park"
+        }
+      ],
+      "abstract": "In the social ecological model, personal characteristics are important determinants of health behaviors, however, multi-dimensional approaches that consider social and physical environments must be utilized to gain a broader picture. Accordingly, this study examines the effects of personal, social, and physical environment variables as factors affecting levels of physical activity (METs). Our findings are based on 72,916 responses from the 2015 Community Health Survey in South Korea. Individual characteristics considered included sex, education level, marital status, age, and income. The social environment variables considered were trust between neighbors and the social network with neighbors. The physical environment variables were satisfaction with living environment and satisfaction with public transportation. The analysis was conducted using a multilevel model in order to accurately consider the characteristic differences of the variables. Regarding personal characteristics, sex, education level, and age have a significant effect on physical activity. Of the social and physical environment variables, social network with neighbors and satisfaction with public transportation have a significant effect on physical activity. This study confirms that a macroscopic understanding is needed to explain individual levels of physical activity; the results of this study will be helpful for public health interventions concerning physical activity."
+    },
+    {
+      "paperId": "dc59adfb390fe47094ca57b6a1def8461a1a8a6a",
+      "externalIds": {
+        "MAG": "3159280702",
+        "DOI": "10.22342/JME.12.2.13690.279-294",
+        "CorpusId": 235209695
+      },
+      "url": "https://www.semanticscholar.org/paper/dc59adfb390fe47094ca57b6a1def8461a1a8a6a",
+      "title": "GROWTH MINDSET, SCHOOL CONTEXT, AND MATHEMATICS ACHIEVEMENT IN INDONESIA: A MULTILEVEL MODEL",
+      "venue": "JME (Journal of Mathematics Education)",
+      "year": 2021,
+      "citationCount": 48,
+      "openAccessPdf": {
+        "url": "https://ejournal.unsri.ac.id/index.php/jme/article/download/13690/pdf",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.22342/JME.12.2.13690.279-294?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.22342/JME.12.2.13690.279-294, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2021-04-12",
+      "authors": [
+        {
+          "authorId": "2114574351",
+          "name": "Kismiantini Kismiantini"
+        },
+        {
+          "authorId": "120366597",
+          "name": "E. Setiawan"
+        },
+        {
+          "authorId": "88652212",
+          "name": "A. Pierewan"
+        },
+        {
+          "authorId": "1401765614",
+          "name": "O. Montesinos-López"
+        }
+      ],
+      "abstract": "Shifting students to a growth mindset can increase their achievements. Nevertheless, only a few studies have been conducted on this topic in developing countries. This study aims to examine the relationship between growth mindset, school context, and mathematics achievement in Indonesia. Using a multilevel model on the PISA 2018 data, this study explored the variables that contributed to mathematics achievement. The multilevel analysis showed that students’ gender, growth mindset, index of economic social, and cultural status were statistically significant predictors of students’ mathematics achievement. Girls have been reported to have a higher mathematics achievement than boys in Indonesia. As the students’ growth mindset increases, so do their mathematics achievement."
+    },
+    {
+      "paperId": "4bf0e9786d6638dc7d4b1fc929def68da9003c4e",
+      "externalIds": {
+        "MAG": "2749069611",
+        "DOI": "10.18637/JSS.V080.I01",
+        "CorpusId": 73586718
+      },
+      "url": "https://www.semanticscholar.org/paper/4bf0e9786d6638dc7d4b1fc929def68da9003c4e",
+      "title": "brms: An R Package for Bayesian Multilevel Models Using Stan",
+      "venue": "",
+      "year": 2017,
+      "citationCount": 9752,
+      "openAccessPdf": {
+        "url": "https://www.jstatsoft.org/index.php/jss/article/view/v080i01/v80i01.pdf",
+        "status": "GOLD",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.18637/JSS.V080.I01?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.18637/JSS.V080.I01, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2017-08-29",
+      "authors": [
+        {
+          "authorId": "7414550",
+          "name": "Paul-Christian Bürkner"
+        }
+      ],
+      "abstract": "The brms package implements Bayesian multilevel models in R using the probabilistic programming language Stan. A wide range of distributions and link functions are supported, allowing users to fit - among others - linear, robust linear, binomial, Poisson, survival, ordinal, zero-inflated, hurdle, and even non-linear models all in a multilevel context. Further modeling options include autocorrelation of the response variable, user defined covariance structures, censored data, as well as meta-analytic standard errors. Prior specifications are flexible and explicitly encourage users to apply prior distributions that actually reflect their beliefs. In addition, model fit can easily be assessed and compared with the Watanabe-Akaike information criterion and leave-one-out cross-validation."
+    },
+    {
+      "paperId": "779d4236cd9d01e977518286f08e9dfef480bdb2",
+      "externalIds": {
+        "MAG": "2918932525",
+        "DOI": "10.1007/S10551-019-04133-8",
+        "CorpusId": 150991480
+      },
+      "url": "https://www.semanticscholar.org/paper/779d4236cd9d01e977518286f08e9dfef480bdb2",
+      "title": "A Multilevel Model Examining the Relationships Between Workplace Spirituality, Ethical Climate and Outcomes: A Social Cognitive Theory Perspective",
+      "venue": "Journal of Business Ethics",
+      "year": 2019,
+      "citationCount": 166,
+      "openAccessPdf": {
+        "url": "https://link.springer.com/content/pdf/10.1007/s10551-019-04133-8.pdf",
+        "status": "HYBRID",
+        "license": "CCBY",
+        "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1007/S10551-019-04133-8?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1007/S10551-019-04133-8, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2019-03-05",
+      "authors": [
+        {
+          "authorId": "1404971877",
+          "name": "Lilian Otaye‐Ebede"
+        },
+        {
+          "authorId": "114546897",
+          "name": "Samah Shaffakat"
+        },
+        {
+          "authorId": "144637585",
+          "name": "S. Foster"
+        }
+      ],
+      "abstract": "The role and influence of workplace spirituality on individual and organisational outcomes continue to draw attention among management scholars. Despite this increased attention, extant literature has yielded limited insights particularly into the impact and influence processes of workplace spirituality on performance outcomes at both the individual and unit levels of analysis. Addressing this gap in research, we proposed and tested a multilevel model, underpinned by social cognitive theory, that examines the processes linking perceptions of workplace spirituality and performance outcomes at the individual and organisational level of analysis. Data were obtained from 51 branches of a retail organisation in the United Kingdom. Results from structural equation modelling analysis revealed three salient findings. First, workplace spirituality was positively related to ethical climate, prosocial motivation, and moral judgment. Second, ethical climate partially mediated the relationship between workplace spirituality and prosocial motivation and moral judgment, respectively. Third, aggregated ethical climate significantly relates to branch-level helping behaviour and service performance."
+    },
+    {
+      "paperId": "8fc01b8f8b99ec0cd08ebe361ced270a1aa4fca2",
+      "externalIds": {
+        "MAG": "2911840179",
+        "DOI": "10.1016/J.JTRANGEO.2019.01.012",
+        "CorpusId": 159422974
+      },
+      "url": "https://www.semanticscholar.org/paper/8fc01b8f8b99ec0cd08ebe361ced270a1aa4fca2",
+      "title": "How does the built environment at residential and work locations affect car ownership? An application of cross-classified multilevel model",
+      "venue": "Journal of Transport Geography",
+      "year": 2019,
+      "citationCount": 94,
+      "openAccessPdf": {
+        "url": "",
+        "status": "CLOSED",
+        "license": null,
+        "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/J.JTRANGEO.2019.01.012?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/J.JTRANGEO.2019.01.012, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+      },
+      "publicationDate": "2019-02-01",
+      "authors": [
+        {
+          "authorId": "145329643",
+          "name": "Chuan Ding"
+        },
+        {
+          "authorId": "2203784",
+          "name": "X. Cao"
+        }
+      ],
+      "abstract": "Abstract Although many studies investigate the connection between the residential built environment and car ownership, the literature offers limited evidence on the effect of work locations. Using data from the Washington metropolitan area, this study develops a cross-classified multilevel model to examine the influences of the built environment at both residential and workplace locations on car ownership, while controlling for spatial dependency arising from spatial aggregation. We found that built environment characteristics at work locations, particularly bus stop density and employment density, influence household car ownership. They explain one third of the total variation of car ownership across work locations. The residential environment appears to impose a stronger influence than the workplace environment. Density, diversity, design, transit access around residences and distance from home to the city center affect car ownership."
+    }
+  ]
+}

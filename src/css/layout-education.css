@@ -1,0 +1,129 @@
+/* education 테마의 화면 배치 (DESIGN.md 4.2): 상단 막대(로고, 4단계, API 키와 모델) + 카드형 사이드바 + 결과/상세 열.
+   HTML은 academic과 같고 여기서는 배치만 덧씌운다. 색과 글꼴은 모두 토큰에서 온다. */
+
+/* 상단 막대는 education에서만 보인다 */
+.topbar { display: none; }
+.side-tablist { display: none; }
+.side-tabs { display: flex; flex-direction: column; gap: 14px; }
+
+:root[data-theme="education"] body { padding-top: 96px; }
+
+:root[data-theme="education"] .topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 32px;
+  background: var(--bg-app);
+  border-bottom: 1px solid var(--border);
+}
+:root[data-theme="education"] body[data-gate="on"] { padding-top: 0; }
+:root[data-theme="education"] body[data-gate="on"] .topbar { display: none; }
+
+:root[data-theme="education"] .topbar-brand { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+:root[data-theme="education"] .topbar-icon { display: block; width: 48px; height: 48px; border-radius: var(--radius-md); }
+:root[data-theme="education"] .topbar .brand-name { color: var(--text); }
+
+/* 4단계 표시: 완료는 --ok 원과 ✓, 현재는 --accent 원, 앞으로 할 단계는 테두리만 있는 원 */
+:root[data-theme="education"] .steps { margin: 0; padding: 0; list-style: none; display: flex; align-items: center; }
+:root[data-theme="education"] .step { display: flex; align-items: center; gap: 10px; color: var(--text-muted); white-space: nowrap; }
+:root[data-theme="education"] .step + .step::before { content: ""; width: 48px; height: 2px; margin: 0 14px; background: var(--border-input); }
+:root[data-theme="education"] .step-dot {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-input);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+:root[data-theme="education"] .step[data-state="done"] .step-dot { background: var(--ok); border-color: var(--ok); color: var(--text); }
+:root[data-theme="education"] .step[data-state="current"] .step-dot { background: var(--accent); border-color: var(--accent); color: var(--accent-on); }
+:root[data-theme="education"] .step[data-state="current"] .step-label { color: var(--accent-strong); font-weight: 700; }
+
+:root[data-theme="education"] .topbar-tools { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+:root[data-theme="education"] .key-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--chip-pdf-bg);
+  color: var(--chip-pdf-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  cursor: pointer;
+}
+:root[data-theme="education"] .key-chip[data-on="false"] { background: var(--accent-soft); color: var(--accent-strong); }
+:root[data-theme="education"] .key-chip .key-dot { border-color: currentColor; }
+:root[data-theme="education"] .topbar-model .check-box { height: 48px; border-radius: var(--radius-pill); }
+
+/* 사이드바: 둥근 카드. 로고는 상단 막대에 있다. */
+:root[data-theme="education"] .sidebar {
+  top: calc(96px + 24px);
+  height: calc(100vh - 96px - 48px);
+  margin: 24px 0 24px 24px;
+  padding: 20px 18px;
+  gap: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+:root[data-theme="education"] .sidebar .brand { display: none; }
+:root[data-theme="education"] .keybox { background: var(--chip-pdf-bg); border-color: transparent; border-radius: var(--radius-lg); }
+
+/* 프리셋 번호 앞의 색 점 (DESIGN.md 4.2) */
+:root[data-theme="education"] .preset-no { width: auto; min-width: 30px; display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); }
+:root[data-theme="education"] .preset-no::before { content: ""; width: 10px; height: 10px; border-radius: var(--radius-pill); background: var(--accent); }
+:root[data-theme="education"] .preset:nth-child(4n+1) .preset-no::before { background: var(--chip-source2-text); }
+:root[data-theme="education"] .preset:nth-child(4n+2) .preset-no::before { background: var(--chip-source-text); }
+:root[data-theme="education"] .preset:nth-child(4n+3) .preset-no::before { background: var(--accent); }
+:root[data-theme="education"] .preset:nth-child(4n+4) .preset-no::before { background: var(--chip-pdf-text); }
+
+/* 열 배치: 결과 600 | 상세(나머지) | 오른쪽 열. 칸이 모자라면 오른쪽 열을 상세 아래로 내린다. */
+:root[data-theme="education"] .search-body { grid-template-columns: minmax(320px, 600px) minmax(0, 1fr); }
+:root[data-theme="education"] .search-body.has-side { grid-template-columns: minmax(320px, 600px) minmax(300px, 1fr) minmax(300px, 0.8fr); }
+:root[data-theme="education"] .detail,
+:root[data-theme="education"] .side { top: calc(96px + 16px); max-height: calc(100vh - 96px - 32px); }
+
+/* 오른쪽 열의 "용어 사전 | 통계 상세" 탭: education에서만 탭으로 보이고 academic에서는 두 카드가 모두 보인다 */
+:root[data-theme="education"] .side-tablist { display: flex; gap: 8px; }
+:root[data-theme="education"] .side-tab {
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--fs-small);
+  cursor: pointer;
+}
+:root[data-theme="education"] .side-tab[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); font-weight: 700; }
+:root[data-theme="education"] .side-tabs[data-tab="glossary"] > [data-panel="stats"],
+:root[data-theme="education"] .side-tabs[data-tab="stats"] > [data-panel="glossary"] { display: none; }
+
+@media (max-width: 1680px) {
+  :root[data-theme="education"] .search-body.has-side { grid-template-columns: minmax(320px, 460px) minmax(300px, 1fr); }
+  :root[data-theme="education"] .side { grid-column: 2; grid-row: 2; top: auto; max-height: none; }
+}
+@media (max-width: 1560px) {
+  :root[data-theme="education"] .search-body { grid-template-columns: minmax(320px, 460px) minmax(0, 1fr); }
+}
+@media (max-width: 1080px) {
+  :root[data-theme="education"] .search-body,
+  :root[data-theme="education"] .search-body.has-side { grid-template-columns: minmax(0, 1fr); }
+  :root[data-theme="education"] .side { grid-column: 1; grid-row: auto; }
+  /* 좁은 화면에서는 상단 막대를 고정하지 않고 맨 위 줄로 둔다 (줄이 바뀌어 높이가 늘어나도 본문을 가리지 않는다) */
+  :root[data-theme="education"] body { padding-top: 0; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "topbar topbar" "sidebar main"; }
+  :root[data-theme="education"] .topbar { position: static; grid-area: topbar; height: auto; min-height: 96px; flex-wrap: wrap; padding: 12px 16px; gap: 12px; }
+  :root[data-theme="education"] .sidebar { position: static; height: auto; margin: 24px 0 24px 24px; }
+}
