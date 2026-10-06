@@ -62,6 +62,11 @@ test('otherTheme: 지금과 다른 테마를 돌려준다', () => {
   assert.equal(PN.otherTheme('이상한 값'), 'education'); // 알 수 없는 값은 academic처럼 취급
 });
 
+test('themeQuickLabel: 눌렀을 때 바뀔 테마의 이름 + "테마" (기능 차이가 아니라 모양이라는 뜻)', () => {
+  assert.equal(PN.themeQuickLabel('academic'), '교육용 테마');
+  assert.equal(PN.themeQuickLabel('education'), '학술용 테마');
+});
+
 test('saveTheme: 올바른 테마만 pn_theme에 저장하고, 저장소가 막혀 있으면 false', () => {
   const saved = {};
   const storage = { setItem: (k, v) => { saved[k] = v; } };

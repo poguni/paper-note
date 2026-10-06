@@ -40,9 +40,54 @@
 
   var ARROW = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"></path></svg>';
 
+  // 서재 카드의 작은 아이콘 버튼용 그림 (고정된 문자열이라 외부 입력이 섞이지 않는다)
+  var SVG_OPEN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="';
+  var SVG_STROKE = '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var ICON_STAR = SVG_OPEN + 'none' + SVG_STROKE + '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"></path></svg>';
+  var ICON_STAR_ON = SVG_OPEN + 'currentColor' + SVG_STROKE + '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"></path></svg>';
+  var ICON_TRASH = SVG_OPEN + 'none' + SVG_STROKE + '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>';
+  var ICON_GRIP = SVG_OPEN + 'currentColor' + SVG_STROKE + '<circle cx="9" cy="6" r="1"></circle><circle cx="15" cy="6" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="9" cy="18" r="1"></circle><circle cx="15" cy="18" r="1"></circle></svg>';
+
+  function iconButton(icon, label) {
+    var b = el('button', 'btn btn-sm btn-secondary btn-icon');
+    b.type = 'button';
+    b.setAttribute('aria-label', label);
+    b.title = label;
+    b.insertAdjacentHTML('afterbegin', icon);
+    return b;
+  }
+
+  // 서재 카드 오른쪽 아래의 도구: [순서 바꾸기] [맨 위에 고정] [삭제]
+  // tools: { pinned, onTogglePin(paper, button), onRemove(paper, button), onMove(paper, delta) | null }
+  // onMove가 있으면(내 순서 정렬일 때) 끌어서 놓는 손잡이를 보이고, 손잡이에서 ↑↓ 키로도 옮길 수 있다.
+  function libraryTools(paper, tools) {
+    var box = el('div', 'card-tools');
+    if (tools.onMove) {
+      var grip = iconButton(ICON_GRIP, '순서 바꾸기 (카드를 끌거나, 이 버튼에서 위·아래 화살표 키)');
+      grip.classList.add('card-grip');
+      grip.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+        e.preventDefault();
+        tools.onMove(paper, e.key === 'ArrowUp' ? -1 : 1);
+      });
+      box.appendChild(grip);
+    }
+    var pin = iconButton(tools.pinned ? ICON_STAR_ON : ICON_STAR, tools.pinned ? '고정 해제' : '맨 위에 고정');
+    pin.classList.add('card-pin');
+    pin.setAttribute('aria-pressed', tools.pinned ? 'true' : 'false');
+    pin.addEventListener('click', function () { tools.onTogglePin(paper, pin); });
+    box.appendChild(pin);
+    var del = iconButton(ICON_TRASH, '서재에서 삭제');
+    del.classList.add('card-del');
+    del.addEventListener('click', function () { tools.onRemove(paper, del); });
+    box.appendChild(del);
+    return box;
+  }
+
   // paper: 검색 결과의 공통 형식, saved: 저장 여부, selected: 상세에 열려 있는지
   // handlers: { onToggleSave(paper, button), onSelect(paper) }
-  // extras(선택): { badges: ['분석 초록·본문'], note: '메모 첫 줄' } — 서재에서 분석 여부와 메모를 보여 줄 때
+  // extras(선택): { badges: ['분석 초록·본문'], note: '메모 첫 줄', tools } — 서재에서 분석 여부, 메모, 고정·삭제 도구를 보여 줄 때.
+  //   tools가 있으면 "저장됨" 버튼 대신 오른쪽 아래의 도구(libraryTools)를 둔다.
   PN.renderCard = function (paper, saved, selected, handlers, extras) {
     var card = el('article', 'card');
     card.dataset.key = PN.paperKey(paper);
@@ -73,11 +118,14 @@
     card.appendChild(main);
 
     var actions = el('div', 'card-actions');
-    var save = el('button', 'btn btn-sm ' + (saved ? 'btn-saved' : 'btn-secondary'), saved ? '저장됨 ✓' : '저장');
-    save.type = 'button';
-    save.setAttribute('aria-pressed', saved ? 'true' : 'false');
-    save.addEventListener('click', function () { handlers.onToggleSave(paper, save); });
-    actions.appendChild(save);
+    var tools = extras && extras.tools;
+    if (!tools) {
+      var save = el('button', 'btn btn-sm ' + (saved ? 'btn-saved' : 'btn-secondary'), saved ? '저장됨 ✓' : '저장');
+      save.type = 'button';
+      save.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      save.addEventListener('click', function () { handlers.onToggleSave(paper, save); });
+      actions.appendChild(save);
+    }
 
     var pdf = PN.safeUrl(paper.pdfUrl);
     if (pdf) {
@@ -88,6 +136,10 @@
       a.appendChild(document.createTextNode('원문 PDF 열기'));
       a.insertAdjacentHTML('beforeend', ARROW); // 고정된 아이콘 문자열이라 외부 입력이 섞이지 않는다
       actions.appendChild(a);
+    }
+    if (tools) {
+      card.dataset.pinned = tools.pinned ? 'true' : 'false';
+      actions.appendChild(libraryTools(paper, tools));
     }
     card.appendChild(actions);
     return card;

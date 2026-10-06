@@ -100,10 +100,75 @@ test('sortLibrary: 원래 목록을 바꾸지 않는다', () => {
   assert.deepEqual(ps.map((p) => p.rowId), before);
 });
 
-test('서재 정렬 선택지: 저장일순이 맨 앞이고 관련도는 없다', () => {
-  assert.equal(PN.LIBRARY_SORT_OPTIONS[0][0], 'saved_desc');
+test('서재 정렬 선택지: 내 순서가 맨 앞(기본), 다음이 저장일순이고 관련도는 없다', () => {
+  assert.deepEqual(PN.LIBRARY_SORT_OPTIONS.slice(0, 2).map((o) => o[0]), ['manual', 'saved_desc']);
   assert.ok(!PN.LIBRARY_SORT_OPTIONS.some((o) => o[0] === 'relevance'));
-  assert.equal(PN.LIBRARY_SORT_OPTIONS.length, 8); // 저장일순 + 검색 기준 7개
+  assert.equal(PN.LIBRARY_SORT_OPTIONS.length, 9); // 내 순서 + 저장일순 + 검색 기준 7개
+});
+
+test('rowToPaper: 고정 여부와 자리 번호를 담고, 없으면 고정 안 함·번호 없음', () => {
+  const none = PN.rowToPaper(row('a'), 0);
+  assert.equal(none.pinned, false);
+  assert.equal(none.sortIndex, null);
+  const set = PN.rowToPaper(row('b', { pinned: true, sort_index: 0 }), 0);
+  assert.equal(set.pinned, true);
+  assert.equal(set.sortIndex, 0); // 0도 "번호 있음"
+});
+
+// 내 순서 시험용: 번호가 있는 논문(a=0, b=1, c=2), 번호 없는 새 논문(n), 고정한 논문(p, 번호 5)
+const ranked = () => PN.rowsToPapers([
+  row('a', { sort_index: 0, saved_at: '2026-10-01T00:00:00Z' }),
+  row('b', { sort_index: 1, saved_at: '2026-10-02T00:00:00Z' }),
+  row('c', { sort_index: 2, saved_at: '2026-10-03T00:00:00Z' }),
+]);
+
+test('sortLibrary(내 순서): 자리 번호순, 번호 없는 새 논문은 맨 앞, 번호 없는 것끼리는 새것부터', () => {
+  const ids = (ps) => PN.sortLibrary(ps, 'manual', NOW).map((p) => p.rowId);
+  assert.deepEqual(ids(ranked()), ['a', 'b', 'c']);
+  const withNew = ranked().concat(PN.rowsToPapers([row('n1', { saved_at: '2026-10-04T00:00:00Z' }), row('n2', { saved_at: '2026-10-05T00:00:00Z' })]));
+  assert.deepEqual(ids(withNew), ['n2', 'n1', 'a', 'b', 'c']);
+  assert.deepEqual(ids(PN.rowsToPapers([row('x', { sort_index: 3, saved_at: '2026-10-01T00:00:00Z' }), row('y', { sort_index: 3, saved_at: '2026-10-02T00:00:00Z' })])), ['y', 'x']); // 같은 번호는 새것부터
+});
+
+test('sortLibrary: 고정한 논문은 어떤 정렬에서도 맨 위, 고정끼리·나머지끼리는 그 정렬대로', () => {
+  const ps = PN.rowsToPapers([
+    row('1', { pinned: false, sort_index: 0, saved_at: '2026-10-05T00:00:00Z', year: 2020, published_date: '2020-03-01' }),
+    row('2', { pinned: true, sort_index: 1, saved_at: '2026-10-04T00:00:00Z', year: 2022, published_date: '2022-03-01' }),
+    row('3', { pinned: true, sort_index: 2, saved_at: '2026-10-03T00:00:00Z', year: 2018, published_date: '2018-03-01' }),
+    row('4', { pinned: false, sort_index: 3, saved_at: '2026-10-02T00:00:00Z', year: 2024, published_date: '2024-03-01' }),
+  ]);
+  const ids = (key) => PN.sortLibrary(ps, key, NOW).map((p) => p.rowId);
+  assert.deepEqual(ids('manual'), ['2', '3', '1', '4']);
+  assert.deepEqual(ids('saved_desc'), ['2', '3', '1', '4']);
+  assert.deepEqual(ids('date_desc'), ['2', '3', '4', '1']);
+});
+
+test('moveInLibrary: 카드를 다른 카드 자리로 옮기고, 번호가 달라진 논문만 0부터 다시 매긴다', () => {
+  const ordered = PN.sortLibrary(ranked(), 'manual', NOW); // a b c
+  const up = PN.moveInLibrary(ordered, 'c', 'a'); // 위로: a 앞으로
+  assert.deepEqual(up.order.map((p) => p.rowId), ['c', 'a', 'b']);
+  assert.deepEqual(up.changes, [{ id: 'c', sort_index: 0 }, { id: 'a', sort_index: 1 }, { id: 'b', sort_index: 2 }]);
+  const down = PN.moveInLibrary(ordered, 'a', 'b'); // 아래로: b 뒤로
+  assert.deepEqual(down.order.map((p) => p.rowId), ['b', 'a', 'c']);
+  assert.deepEqual(down.changes, [{ id: 'b', sort_index: 0 }, { id: 'a', sort_index: 1 }]); // c는 그대로(2)
+  assert.deepEqual(ordered.map((p) => p.rowId), ['a', 'b', 'c']); // 원래 목록은 그대로
+});
+
+test('moveInLibrary: 번호가 없던 논문도 모두 번호를 받는다', () => {
+  const ps = PN.sortLibrary(PN.rowsToPapers([row('n1', { saved_at: '2026-10-01T00:00:00Z' }), row('n2', { saved_at: '2026-10-02T00:00:00Z' })]), 'manual', NOW); // n2 n1
+  const res = PN.moveInLibrary(ps, 'n1', 'n2');
+  assert.deepEqual(res.order.map((p) => p.rowId), ['n1', 'n2']);
+  assert.deepEqual(res.changes, [{ id: 'n1', sort_index: 0 }, { id: 'n2', sort_index: 1 }]);
+});
+
+test('moveInLibrary: 같은 카드, 없는 카드, 고정 구역을 넘나드는 이동은 하지 않는다 (null)', () => {
+  const ps = PN.sortLibrary(PN.rowsToPapers([row('p', { pinned: true, sort_index: 0 }), row('q', { sort_index: 1 }), row('r', { sort_index: 2 })]), 'manual', NOW); // p q r
+  assert.equal(PN.moveInLibrary(ps, 'q', 'q'), null);
+  assert.equal(PN.moveInLibrary(ps, 'q', 'zzz'), null);
+  assert.equal(PN.moveInLibrary(ps, 'zzz', 'q'), null);
+  assert.equal(PN.moveInLibrary(ps, 'q', 'p'), null); // 고정 안 한 카드를 고정 구역으로
+  assert.equal(PN.moveInLibrary(ps, 'p', 'q'), null);
+  assert.ok(PN.moveInLibrary(ps, 'r', 'q')); // 같은 구역 안은 된다
 });
 
 test('indexAnalyses와 analysisBadge', () => {

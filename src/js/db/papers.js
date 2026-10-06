@@ -2,7 +2,7 @@
 (function (g) {
   var PN = (g.PN = g.PN || {});
   var COLUMNS = 'id,source,source_id,doi';
-  var ALL_COLUMNS = 'id,source,source_id,title,authors,year,published_date,citation_count,abstract,doi,pdf_url,landing_url,categories,memo,saved_at,preset_id';
+  var ALL_COLUMNS = 'id,source,source_id,title,authors,year,published_date,citation_count,abstract,doi,pdf_url,landing_url,categories,memo,saved_at,preset_id,pinned,sort_index';
   var PAGE = 1000; // PostgREST가 한 번에 돌려주는 최대 행 수
 
   // 검색 결과의 공통 형식 → pn_papers 한 행 (id, user_id, memo, saved_at은 DB 기본값)
@@ -113,6 +113,21 @@
         var res = await client.from('pn_papers').update({ memo: String(memo) }).eq('id', id).select('id');
         if (res.error) throw res.error;
         return (res.data || []).length > 0;
+      },
+
+      // "맨 위에 고정"을 켜거나 끈다. 바뀐 행이 있으면 true, 이미 없었으면 false
+      setPinned: async function (id, pinned) {
+        var res = await client.from('pn_papers').update({ pinned: !!pinned }).eq('id', id).select('id');
+        if (res.error) throw res.error;
+        return (res.data || []).length > 0;
+      },
+
+      // "내 순서"의 자리 번호를 바꾼다. changes: [{ id, sort_index }]. 번호는 겹쳐도 되는 열이라 한 줄씩 바꾸어도 중간에 충돌하지 않는다.
+      setOrder: async function (changes) {
+        var results = await Promise.all(changes.map(function (c) {
+          return client.from('pn_papers').update({ sort_index: c.sort_index }).eq('id', c.id);
+        }));
+        results.forEach(function (r) { if (r.error) throw r.error; });
       },
 
       // 저장을 취소한다. 그 논문의 분석 결과도 함께 지워지므로(DB의 on delete cascade) 화면에서 확인을 받아야 한다.

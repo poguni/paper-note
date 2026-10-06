@@ -32,6 +32,11 @@
     return theme === 'education' ? 'academic' : 'education';
   };
 
+  // 왼쪽 메뉴의 빠른 전환 버튼 글자: 눌렀을 때 바뀔 테마의 이름. 기능 차이가 아니라 화면 모양만 바뀐다는 뜻으로 "테마"라고 쓴다.
+  PN.themeQuickLabel = function (theme) {
+    return PN.THEME_INFO[PN.otherTheme(theme)].short + ' 테마';
+  };
+
   // 선택을 저장한다. 저장소 접근이 막혀 있으면 false (이번 화면에는 그대로 적용된다)
   PN.saveTheme = function (theme, storage) {
     if (!Object.prototype.hasOwnProperty.call(FONTS, theme)) return false;

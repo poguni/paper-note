@@ -125,5 +125,6 @@
 .tr-block { padding: 0 12px 12px; }
 .translation-text { margin-top: 6px; padding: 10px 12px; background: var(--bg-app); border-radius: var(--radius-md); white-space: pre-wrap; line-height: 1.75; }
 .tr-block .btn { margin-top: 8px; }
-.tr-block .tr-cost { margin-left: 10px; }
+.tr-block .btn + .btn { margin-left: 8px; }
+.tr-block .tr-cost, .tr-block .idea-copy-status { margin-left: 10px; }
 .tr-all { margin-top: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }

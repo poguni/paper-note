@@ -9,7 +9,7 @@
     var client = ctx.auth && ctx.auth.client;
     var els = {
       query: $('#lib-query'), analysis: $('#lib-analysis'), preset: $('#lib-preset'), sort: $('#lib-sort'), list: $('#lib-list'), sub: $('#lib-sub'),
-      banner: $('#lib-banner'), gate: $('#lib-gate'), gateText: $('#lib-gate-text'), detail: $('#lib-detail'), form: $('#lib-form')
+      banner: $('#lib-banner'), hint: $('#lib-hint'), gate: $('#lib-gate'), gateText: $('#lib-gate-text'), detail: $('#lib-detail'), form: $('#lib-form')
     };
     var papersApi = client && PN.createPapersApi(client);
     var analysesApi = client && PN.createAnalysesApi(client);
@@ -30,6 +30,8 @@
     var loadNo = 0;
     var approved = false;
     var accountKey = '';
+    var dragId = null; // 지금 끌고 있는 카드의 논문 행 id
+    var orderQueue = Promise.resolve(); // 순서 저장을 한 줄로 세워 서로 덮어쓰지 않게 한다
 
     var detailPanel = PN.createDetailPanel({
       container: els.detail, side: $('#lib-side'), papersApi: papersApi, analysis: ctx.analysis, pdf: ctx.pdf,
@@ -84,6 +86,21 @@
       return PN.sortLibrary(filtered, els.sort.value, new Date());
     }
 
+    // 카드를 끌어 순서를 바꿀 수 있는 때: "내 순서" 정렬이고, 찾기·거르기가 없어 전체 목록이 보일 때
+    function isFiltered() { return !!els.query.value.trim() || els.analysis.value !== 'all' || !!els.preset.value; }
+    function canReorder() { return els.sort.value === 'manual' && !isFiltered(); }
+
+    function showHint(shownCount) {
+      var text = '';
+      if (approved && status === 'ready' && items.length > 1 && shownCount > 0) {
+        if (els.sort.value !== 'manual') text = '정렬을 "내 순서"로 바꾸면 카드를 끌어서 읽을 순서를 정할 수 있습니다. ★을 누르면 어떤 정렬에서도 맨 위에 고정됩니다.';
+        else if (isFiltered()) text = '찾기·거르기를 해제하면 카드를 끌어서 순서를 바꿀 수 있습니다.';
+        else text = '카드를 끌어서 읽을 순서를 바꿀 수 있습니다(키보드는 ⠿ 버튼에서 위·아래 화살표). ★을 누르면 맨 위에 고정됩니다.';
+      }
+      els.hint.textContent = text;
+      els.hint.hidden = !text;
+    }
+
     // ---- 그리기 ----
     function stateBox(text, action) {
       var box = document.createElement('div');
@@ -106,6 +123,7 @@
       els.list.textContent = '';
       els.list.setAttribute('aria-busy', status === 'loading' ? 'true' : 'false');
       if (status !== 'error') els.banner.hidden = true;
+      showHint(0);
       if (!approved) { els.sub.textContent = ''; return; }
       if (status === 'loading') { els.sub.textContent = ''; els.list.appendChild(stateBox('서재를 불러오는 중입니다…')); return; }
       if (status === 'error') { els.sub.textContent = ''; els.list.appendChild(stateBox('서재를 불러오지 못했습니다.', { label: '다시 시도', onClick: load })); return; }
@@ -120,15 +138,105 @@
         els.list.appendChild(stateBox('조건에 맞는 논문이 없습니다.', { label: '조건 해제', onClick: function () { els.query.value = ''; els.analysis.value = 'all'; els.preset.value = ''; render(); } }));
         return;
       }
+      showHint(shown.length);
+      var reorder = canReorder() && shown.length > 1;
       shown.forEach(function (paper) {
         var isOpen = !!selected && selected.rowId === paper.rowId;
         var badge = PN.analysisBadge(index.get(paper.rowId));
         var badges = badge ? [badge] : [];
         if (paper.presetId && presetNames.has(paper.presetId)) badges.push(presetNames.get(paper.presetId));
         var memoLine = paper.memo ? paper.memo.split('\n')[0].slice(0, 80) : '';
-        els.list.appendChild(PN.renderCard(paper, true, isOpen, { onToggleSave: unsave, onSelect: select }, {
-          badges: badges, note: memoLine ? '메모: ' + memoLine : ''
-        }));
+        var cardNode = PN.renderCard(paper, true, isOpen, { onToggleSave: unsave, onSelect: select }, {
+          badges: badges, note: memoLine ? '메모: ' + memoLine : '',
+          tools: { pinned: paper.pinned, onTogglePin: togglePin, onRemove: unsave, onMove: reorder ? moveBy : null }
+        });
+        if (reorder) enableDrag(cardNode, paper);
+        els.list.appendChild(cardNode);
+      });
+    }
+
+    // 다시 그린 뒤에도 키보드 위치를 잃지 않도록, 같은 카드의 같은 도구로 포커스를 돌려 놓는다
+    function refocus(paper, selector) {
+      var node = Array.prototype.filter.call(els.list.children, function (c) { return c.dataset.key === PN.paperKey(paper); })[0];
+      var target = node && node.querySelector(selector);
+      if (target) target.focus();
+    }
+
+    function fail(e, what) {
+      els.banner.hidden = false;
+      els.banner.textContent = PN.dbErrorMessage(e, what);
+    }
+
+    // ---- 맨 위에 고정 ----
+    async function togglePin(paper, button) {
+      button.disabled = true;
+      try {
+        await papersApi.setPinned(paper.rowId, !paper.pinned);
+      } catch (e) {
+        button.disabled = false;
+        fail(e, paper.pinned ? '고정 해제' : '고정');
+        return;
+      }
+      paper.pinned = !paper.pinned;
+      render();
+      refocus(paper, '.card-pin');
+    }
+
+    // ---- 순서 바꾸기 (끌어서 놓기, 또는 손잡이 버튼의 ↑↓ 키) ----
+    // 화면은 바로 바꾸고 저장은 뒤에서 한다. 저장이 실패하면 DB의 순서로 다시 읽어 화면과 맞춘다.
+    function applyMove(fromId, toId) {
+      var result = PN.moveInLibrary(PN.sortLibrary(items, 'manual', new Date()), fromId, toId);
+      if (!result) return false;
+      result.order.forEach(function (p, i) { p.sortIndex = i; }); // items의 논문 객체와 같은 것
+      render();
+      orderQueue = orderQueue.then(function () { return papersApi.setOrder(result.changes); }).catch(async function (e) {
+        await load();
+        fail(e, '순서 저장');
+      });
+      return true;
+    }
+
+    function moveBy(paper, delta) {
+      var ordered = PN.sortLibrary(items, 'manual', new Date());
+      var at = ordered.findIndex(function (p) { return p.rowId === paper.rowId; });
+      var other = ordered[at + delta];
+      if (other && applyMove(paper.rowId, other.rowId)) refocus(paper, '.card-grip');
+    }
+
+    function clearDropMarks() {
+      Array.prototype.forEach.call(els.list.querySelectorAll('.card[data-drop]'), function (c) { c.removeAttribute('data-drop'); });
+    }
+
+    function enableDrag(cardNode, paper) {
+      cardNode.draggable = true;
+      cardNode.dataset.reorder = 'true';
+      cardNode.addEventListener('dragstart', function (e) {
+        dragId = paper.rowId;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', paper.rowId); // 일부 브라우저는 데이터가 있어야 끌기를 시작한다
+        cardNode.dataset.dragging = 'true';
+      });
+      cardNode.addEventListener('dragend', function () {
+        dragId = null;
+        cardNode.removeAttribute('data-dragging');
+        clearDropMarks();
+      });
+      cardNode.addEventListener('dragover', function (e) {
+        var from = dragId && items.filter(function (p) { return p.rowId === dragId; })[0];
+        if (!from || from.rowId === paper.rowId || from.pinned !== paper.pinned) return; // 고정한 카드와 아닌 카드는 구역이 다르다
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        // 위로 끌면 이 카드 앞으로, 아래로 끌면 이 카드 뒤로 들어간다 (PN.moveInLibrary와 같은 규칙)
+        var ordered = PN.sortLibrary(items, 'manual', new Date());
+        var side = ordered.indexOf(from) < ordered.indexOf(paper) ? 'after' : 'before';
+        if (cardNode.dataset.drop !== side) { clearDropMarks(); cardNode.dataset.drop = side; }
+      });
+      cardNode.addEventListener('drop', function (e) {
+        e.preventDefault();
+        var from = dragId;
+        dragId = null;
+        clearDropMarks();
+        if (from) applyMove(from, paper.rowId);
       });
     }
 
@@ -138,16 +246,15 @@
       detailPanel.render(selected);
     }
 
-    // 서재에서는 저장된 논문만 있으므로 눌러서 하는 일은 저장 취소뿐이다 (분석 결과와 메모도 함께 지워진다)
+    // 카드의 휴지통과 상세의 "저장됨" 버튼이 함께 쓴다. 서재에서 지우는 것이 곧 저장 취소다 (분석 결과와 메모도 함께 지워진다)
     async function unsave(paper, button) {
-      if (!g.confirm('저장을 취소하면 이 논문의 분석 결과와 메모도 함께 지워집니다. 저장을 취소할까요?')) return;
+      if (!g.confirm('이 논문을 서재에서 삭제할까요? 분석 결과와 메모도 함께 지워지며 되돌릴 수 없습니다.')) return;
       button.disabled = true;
       try {
         await papersApi.remove(paper.rowId);
       } catch (e) {
         button.disabled = false;
-        els.banner.hidden = false;
-        els.banner.textContent = PN.dbErrorMessage(e, '저장 취소');
+        fail(e, '삭제');
         return;
       }
       ctx.analysis.onSavedChange(paper, null);

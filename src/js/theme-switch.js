@@ -59,7 +59,7 @@
         o.input.checked = o.theme === theme;
         o.node.dataset.selected = o.theme === theme ? 'true' : 'false';
       });
-      els.quickText.textContent = PN.THEME_INFO[PN.otherTheme(theme)].short + '으로 바꾸기';
+      els.quickText.textContent = PN.themeQuickLabel(theme);
     }
 
     function choose(theme) {

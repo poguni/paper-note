@@ -2,7 +2,7 @@
 (function (g) {
   var PN = (g.PN = g.PN || {});
 
-  PN.LIBRARY_SORT_OPTIONS = [['saved_desc', '저장일순']].concat(PN.SORT_OPTIONS ? PN.SORT_OPTIONS.filter(function (o) { return o[0] !== 'relevance'; }) : []);
+  PN.LIBRARY_SORT_OPTIONS = [['manual', '내 순서'], ['saved_desc', '저장일순']].concat(PN.SORT_OPTIONS ? PN.SORT_OPTIONS.filter(function (o) { return o[0] !== 'relevance'; }) : []);
 
   // pn_papers 행 → 검색 결과와 같은 모양. 이렇게 하면 카드, 상세, 분석 화면을 그대로 쓰고, 논문 열쇠(PN.paperKey)도 같아서
   // 검색 화면에서 만든 분석 결과와 같은 논문으로 이어진다. rank는 저장일 최신순에서의 자리(관련도 대신 동률 정렬에 쓴다).
@@ -28,7 +28,9 @@
       savedAt: row.saved_at,
       rowId: row.id,
       memo: row.memo || '',
-      presetId: row.preset_id || null
+      presetId: row.preset_id || null,
+      pinned: !!row.pinned,
+      sortIndex: row.sort_index == null ? null : row.sort_index
     };
   };
 
@@ -55,12 +57,36 @@
     });
   };
 
-  // 서재 정렬: 저장일순(새것부터)과 검색과 같은 기준
+  function bySavedDesc(a, b) { return a.savedAt < b.savedAt ? 1 : a.savedAt > b.savedAt ? -1 : 0; }
+
+  // "내 순서": 직접 정한 자리 번호순. 아직 번호가 없는 논문(새로 저장한 것)은 맨 앞에 두고 새것부터 놓는다.
+  function byManual(a, b) {
+    if (a.sortIndex == null && b.sortIndex == null) return bySavedDesc(a, b);
+    if (a.sortIndex == null) return -1;
+    if (b.sortIndex == null) return 1;
+    return a.sortIndex - b.sortIndex || bySavedDesc(a, b);
+  }
+
+  // 서재 정렬: 내 순서, 저장일순(새것부터), 검색과 같은 기준. 어느 기준이든 "맨 위에 고정"한 논문이 먼저 온다.
   PN.sortLibrary = function (papers, key, now) {
-    if (key === 'saved_desc') {
-      return papers.slice().sort(function (a, b) { return a.savedAt < b.savedAt ? 1 : a.savedAt > b.savedAt ? -1 : 0; });
-    }
-    return PN.sortPapers(papers.slice(), key, now);
+    var sorted = key === 'manual' ? papers.slice().sort(byManual)
+      : key === 'saved_desc' ? papers.slice().sort(bySavedDesc)
+        : PN.sortPapers(papers.slice(), key, now);
+    return sorted.filter(function (p) { return p.pinned; }).concat(sorted.filter(function (p) { return !p.pinned; }));
+  };
+
+  // 카드 한 장을 다른 카드 자리로 옮긴다. ordered: "내 순서"로 정렬된 전체 목록(고정한 것이 앞).
+  // 고정한 카드와 고정하지 않은 카드는 서로의 구역을 넘나들 수 없다. 옮길 수 없으면 null,
+  // 옮겼으면 { order: 새 목록, changes: [{ id, sort_index }] } — 자리 번호가 달라진 논문만 담고, 번호는 0부터 차례로 다시 매긴다.
+  PN.moveInLibrary = function (ordered, fromId, toId) {
+    var from = ordered.findIndex(function (p) { return p.rowId === fromId; });
+    var to = ordered.findIndex(function (p) { return p.rowId === toId; });
+    if (from < 0 || to < 0 || from === to || ordered[from].pinned !== ordered[to].pinned) return null;
+    var order = ordered.slice();
+    order.splice(to, 0, order.splice(from, 1)[0]);
+    var changes = [];
+    order.forEach(function (p, i) { if (p.sortIndex !== i) changes.push({ id: p.rowId, sort_index: i }); });
+    return { order: order, changes: changes };
   };
 
   // 분석 목록(pn_analyses의 paper_id, stage 행들) → Map(논문 행 id → { abstract: 개수, fulltext: 개수 })

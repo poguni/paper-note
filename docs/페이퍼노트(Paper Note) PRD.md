@@ -76,7 +76,7 @@ P0 기능만으로 "검색 → 저장 → 분석 → 서재"가 완성되고, P1
 | F6 | 초록 단계 분석 | P0 | 3줄 요약, 초록 번역, 핵심 용어 |
 | F7 | PDF 끌어다 놓기와 텍스트 추출 | P0 | 브라우저에서 pdf.js로 처리 |
 | F8 | 본문 단계 분석 | P0 | 구조화 요약(연구 목적, 방법, 결과, 한계), 용어 사전 |
-| F9 | 내 서재 | P0 | 목록, 필터, 정렬, 분석 결과 열람, 메모 |
+| F9 | 내 서재 | P0 | 목록, 필터, 정렬, 분석 결과 열람, 메모. 카드의 맨 위 고정(★), 끌어서 읽을 순서 정하기("내 순서" 정렬), 휴지통 삭제 |
 | F10 | 원문 PDF 새 탭 열기 | P0 | 저장은 사용자가 직접 |
 | F11 | 사용자 프리셋 추가·수정·삭제·순서 변경 | P1 | 기본 7개는 우선순위 순서로 시작. 기간·인용수·개수 필터와 기본 정렬, 통계 분석 모드도 프리셋에 저장 |
 | F12 | 섹션별 번역 | P1 | 초록 번역과 함께 기본 번역 기능 |
@@ -154,7 +154,7 @@ P0 기능만으로 "검색 → 저장 → 분석 → 서재"가 완성되고, P1
 | PDF 있는 논문 우선 | 본문 단계 분석이 가능한 논문을 위로 |
 
 - 값이 같으면 관련도 순서를 따릅니다.
-- 내 서재도 같은 정렬 컴포넌트를 쓰고, "저장일순"을 추가로 제공합니다.
+- 내 서재도 같은 정렬 컴포넌트를 쓰고, "저장일순"과 직접 정하는 "내 순서"(기본)를 추가로 제공합니다. "맨 위에 고정"한 논문은 어떤 정렬에서도 목록 맨 위에 옵니다.
 
 ## AI 분석
 
@@ -249,7 +249,7 @@ Supabase에는 프로필, 논문, 분석 결과, 프리셋 네 테이블을 두�
 
 | 테이블 | 주요 열 | 비고 |
 | --- | --- | --- |
-| `pn_papers` | id, user\_id, source(arxiv 또는 semantic\_scholar), source\_id, title, authors, year, published\_date, citation\_count, abstract, doi, pdf\_url, landing\_url, categories, memo, saved\_at, preset\_id | 저장한 논문 한 건이 한 행. 같은 사용자의 같은 source와 source\_id는 중복 저장 불가. citation\_count는 저장 시점의 값. preset\_id는 그 논문이 나온 검색의 프리셋(서재의 프리셋별 필터용)이며, 프리셋을 지우면 null이 되고 남의 프리셋은 가리킬 수 없다 |
+| `pn_papers` | id, user\_id, source(arxiv 또는 semantic\_scholar), source\_id, title, authors, year, published\_date, citation\_count, abstract, doi, pdf\_url, landing\_url, categories, memo, saved\_at, preset\_id, pinned, sort\_index | 저장한 논문 한 건이 한 행. 같은 사용자의 같은 source와 source\_id는 중복 저장 불가. citation\_count는 저장 시점의 값. preset\_id는 그 논문이 나온 검색의 프리셋(서재의 프리셋별 필터용)이며, 프리셋을 지우면 null이 되고 남의 프리셋은 가리킬 수 없다. pinned는 서재의 "맨 위에 고정", sort\_index는 "내 순서" 정렬의 자리 번호(작을수록 앞, null이면 아직 순서를 정하지 않은 새 논문이라 맨 앞) |
 | `pn_analyses` | id, user\_id, paper\_id, stage(abstract 또는 fulltext), model, result\_json, created\_at | 같은 논문을 모델별, 단계별로 여러 번 저장 가능 |
 | `pn_presets` | id, user\_id, name, position, query, sources, arxiv\_categories, sort, date\_range, min\_citations, result\_limit, stats\_mode | 기본 7개 + 사용자 추가분. sort는 기본 정렬 |
 | `pn_profiles` | id(= 로그인 계정 id), email, status(pending, approved, rejected), is\_admin, created\_at, approved\_at | 가입할 때 자동으로 만들어지고(status=pending), 승인 여부와 관리자 여부를 담음 |
@@ -287,7 +287,7 @@ Supabase에는 프로필, 논문, 분석 결과, 프리셋 네 테이블을 두�
 | 화면 | 구성 요소 |
 | --- | --- |
 | 검색 | 프리셋 탭(7개 + 추가), 검색창, 소스 선택, 검색 필터(기간, 최소 인용수, 개수), 정렬 선택, 결과 카드(제목, 저자, 연도, 인용수, 초록 미리보기, 저장, 원문 PDF 열기, 초록 분석) |
-| 서재 | 저장한 논문 목록, 프리셋별 필터, 분석 여부 표시, 정렬(검색 정렬 기준 + 저장일순) |
+| 서재 | 저장한 논문 목록, 프리셋별 필터, 분석 여부 표시, 정렬(내 순서 + 저장일순 + 검색 정렬 기준), 카드의 맨 위 고정·끌어서 순서 바꾸기·삭제 |
 | 논문 상세 | 메타데이터, 모델 선택, 통계 분석 모드 토글, 분석 실행과 예상 비용, 결과 탭(요약, 번역, 용어, 통계 상세, 앱 아이디어), PDF 끌어다 놓기 영역, 메모 |
 | 설정 | OpenRouter API 키 입력, 기본 모델, 프리셋 관리, 계정(이메일, 로그아웃), 가입 승인 목록(관리자만), Supabase 연결 상태 |
 | 스플래시 · 로그인 | 스플래시 이미지와 앱 제목, 이메일·비밀번호 입력, 로그인, 회원가입 전환 |

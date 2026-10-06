@@ -220,21 +220,41 @@
         box.appendChild(retry);
       }
     }
+    // "내용 복사": 이 칸에 보이는 번역을 복사한다. 전체 번역이 있으면 그것을, 없으면 요약 번역을. 복사할 글이 없으면 버튼도 없다.
+    var copyBtn = null;
+    var copyStatus = null;
+    var copyTarget = tr ? tr.ko : item.summary;
+    if (copyTarget) {
+      copyBtn = el('button', 'btn btn-sm btn-secondary', '내용 복사');
+      copyBtn.type = 'button';
+      copyStatus = el('span', 'idea-copy-status');
+      copyStatus.setAttribute('role', 'status');
+      copyBtn.addEventListener('click', async function () {
+        copyStatus.textContent = (await copyText(copyTarget)) ? '복사했습니다.' : '복사하지 못했습니다. 글을 직접 선택해 복사하세요.';
+      });
+    }
+
     var busyHere = hooks.busy && hooks.busy.current === item.title;
     if (busyHere) {
       var wait = el('p', 'analysis-running', '이 섹션을 번역하는 중입니다…');
       wait.setAttribute('role', 'status');
       box.appendChild(wait);
     } else if (hooks.canTranslate(item.title)) {
+      if (copyBtn) box.appendChild(copyBtn); // 번역 버튼의 왼쪽
       var go = el('button', 'btn btn-sm btn-secondary', tr ? '다시 전체 번역' : '이 섹션 전체 번역');
       go.type = 'button';
       go.disabled = hooks.disabled;
       go.addEventListener('click', function () { hooks.onTranslate(item.title); });
       box.appendChild(go);
       box.appendChild(el('span', 'analysis-est tr-cost', '예상 비용 ' + hooks.costText(item.title)));
-    } else if (!tr) {
-      box.appendChild(el('p', 'detail-hint', 'PDF를 끌어다 놓으면 이 섹션의 전체 번역을 볼 수 있습니다.'));
+    } else {
+      if (copyBtn) { // PDF가 없어 번역 버튼이 없을 때도 복사는 할 수 있다
+        box.appendChild(copyBtn);
+        box.appendChild(copyStatus);
+      }
+      if (!tr) box.appendChild(el('p', 'detail-hint', 'PDF를 끌어다 놓으면 이 섹션의 전체 번역을 볼 수 있습니다.'));
     }
+    if (copyStatus && !copyStatus.parentNode && !busyHere) box.appendChild(copyStatus);
     d.appendChild(box);
     return d;
   }

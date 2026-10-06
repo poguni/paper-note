@@ -54,6 +54,50 @@ test('analyses.listIndex: 1000건씩 끝까지 읽고 오류는 던진다', asyn
   await assert.rejects(PN.createAnalysesApi(c.client).listIndex(), (e) => e.code === 'x');
 });
 
+// ---------------------------------------------------------------- 고정과 순서
+function updateClient(handler) {
+  const calls = [];
+  const client = {
+    from(table) {
+      const state = { table, filters: [] };
+      const b = {
+        update(values) { state.values = values; return b; },
+        eq(col, val) { state.filters.push([col, val]); return b; },
+        select() { return b; },
+        then(resolve, reject) { calls.push({ ...state }); return Promise.resolve(handler(state)).then(resolve, reject); },
+      };
+      return b;
+    },
+  };
+  return { client, calls };
+}
+
+test('papers.listAll: 고정 여부와 자리 번호 열도 읽는다', async () => {
+  const { client, log } = fakeClient(() => ({ data: [], error: null }));
+  await PN.createPapersApi(client).listAll();
+  assert.ok(log[0].select.includes('pinned'));
+  assert.ok(log[0].select.includes('sort_index'));
+});
+
+test('papers.setPinned: 그 행의 pinned만 바꾼다. 바뀐 행이 없으면 false, 오류는 던진다', async () => {
+  let c = updateClient(() => ({ data: [{ id: 'r1' }], error: null }));
+  assert.equal(await PN.createPapersApi(c.client).setPinned('r1', true), true);
+  assert.deepEqual(c.calls[0].values, { pinned: true });
+  assert.deepEqual(c.calls[0].filters, [['id', 'r1']]);
+  c = updateClient(() => ({ data: [], error: null }));
+  assert.equal(await PN.createPapersApi(c.client).setPinned('gone', false), false);
+  c = updateClient(() => ({ data: null, error: { code: 'x' } }));
+  await assert.rejects(PN.createPapersApi(c.client).setPinned('r1', true), (e) => e.code === 'x');
+});
+
+test('papers.setOrder: 바뀐 논문마다 sort_index만 바꾸고, 하나라도 실패하면 던진다', async () => {
+  let c = updateClient(() => ({ data: null, error: null }));
+  await PN.createPapersApi(c.client).setOrder([{ id: 'a', sort_index: 0 }, { id: 'b', sort_index: 1 }]);
+  assert.deepEqual(c.calls.map((x) => [x.values, x.filters]), [[{ sort_index: 0 }, [['id', 'a']]], [{ sort_index: 1 }, [['id', 'b']]]]);
+  c = updateClient((s) => ({ data: null, error: s.filters[0][1] === 'b' ? { code: 'x' } : null }));
+  await assert.rejects(PN.createPapersApi(c.client).setOrder([{ id: 'a', sort_index: 0 }, { id: 'b', sort_index: 1 }]), (e) => e.code === 'x');
+});
+
 // ---------------------------------------------------------------- 프리셋 기록
 function insertClient(handler) {
   const calls = [];
