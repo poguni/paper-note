@@ -95,7 +95,7 @@
       if (approved && status === 'ready' && items.length > 1 && shownCount > 0) {
         if (els.sort.value !== 'manual') text = '정렬을 "내 순서"로 바꾸면 카드를 끌어서 읽을 순서를 정할 수 있습니다. ★을 누르면 어떤 정렬에서도 맨 위에 고정됩니다.';
         else if (isFiltered()) text = '찾기·거르기를 해제하면 카드를 끌어서 순서를 바꿀 수 있습니다.';
-        else text = '카드를 끌어서 읽을 순서를 바꿀 수 있습니다(키보드는 ⠿ 버튼에서 위·아래 화살표). ★을 누르면 맨 위에 고정됩니다.';
+        else text = '카드를 끌어서 읽을 순서를 바꿀 수 있습니다(키보드는 ⠿ 버튼에서 위·아래 화살표 키를 누르세요). ★을 누르면 맨 위에 고정됩니다.';
       }
       els.hint.textContent = text;
       els.hint.hidden = !text;

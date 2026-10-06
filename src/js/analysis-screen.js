@@ -119,7 +119,7 @@
       var modelId = deps.select.value;
       var model = PN.getModel(modelId);
       var est = estimateFor(stage, modelId, messages, statsMode);
-      if (est.needsConfirm && !g.confirm(model.label + '로 ' + STAGE_LABEL[stage] + '을 분석합니다. 입력 약 ' + est.inputTokens.toLocaleString('ko-KR') + '토큰, 예상 비용 ' + PN.formatCost(est.costUsd) + '입니다. 계속할까요?')) return;
+      if (est.needsConfirm && !g.confirm(model.label + '로 ' + STAGE_LABEL[stage] + '를 분석합니다. 입력 약 ' + est.inputTokens.toLocaleString('ko-KR') + '토큰, 예상 비용 ' + PN.formatCost(est.costUsd) + '입니다. 계속할까요?')) return;
 
       var ac = new AbortController();
       aborts.set(key, ac);

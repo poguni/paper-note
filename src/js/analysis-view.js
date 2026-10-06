@@ -72,7 +72,7 @@
     var tr = card('초록 번역');
     tr.appendChild(el('p', 'result-text', result.abstract_translation));
     side.appendChild(tr);
-    side.appendChild(glossaryCard('핵심 용어', result.glossary));
+    side.appendChild(glossaryCard('용어 사전', result.glossary));
     return { main: main, side: side };
   };
 
